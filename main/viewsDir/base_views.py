@@ -21,7 +21,8 @@ def base_list_view(request, model, template_name, titulo, campos_visiveis, url_e
     paginator = Paginator(registros, paginate_by)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    campos_busca = ", ".join([field.capitalize() for field in search_fields])
+    campos_busca = ", ".join([field.capitalize() for field in search_fields]) if search_fields else ""
+
       
     context = {
         'page_obj': page_obj,
