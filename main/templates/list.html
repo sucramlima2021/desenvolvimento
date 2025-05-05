@@ -1,0 +1,70 @@
+{% load static %}
+{% load atributos %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+<div class="container">
+    <h2 class="mb-4">{{title}}</h2>
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Buscar por {{campos_busca}}">
+            <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+        </div>
+    </form>
+    <a href="{% url url_novo %}" class="btn btn-success mb-3">Novo Registro</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                {% for campo in campos_visiveis %}
+                    <th>{{ campo|capfirst }}</th>
+                {% endfor %}
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in registros %}
+            <tr>
+                {% for campo in campos_visiveis %}
+                    <td>{{ item|attr:campo }}</td>
+                {% endfor %}
+                <td>
+                    <a href="{% url url_edicao item.pk %}" class="btn btn-sm btn-primary">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="{{ campos_visiveis|length|add:'1' }}">Nenhum registro encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination mt-4">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1{% if query %}&q={{ query }}{% endif %}">« Primeira</a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">‹ Anterior</a>
+            {% endif %}
+    
+            <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+            </span>
+    
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Próxima ›</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Última »</a>
+            {% endif %}
+        </span>
+    </div>
+    
+</div>
+</body>
+</html>
+
+
+
+
