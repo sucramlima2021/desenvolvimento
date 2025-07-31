@@ -1,14 +1,18 @@
-# views/a2055_views.py
 from .base_views import base_list_view, base_create_view, base_update_view
 from ..models import Beneficiarios
 from ..formsDir.beneficiarios_Form import BeneficiariosForm
+
 def beneficiarios_list(request):
     return base_list_view(
         request,
         model=Beneficiarios,
-        template_name='beneficiarios_list.html',
+        template_name='list.html',
+        titulo="Listagem de Beneficiários",
+        campos_visiveis=['nome', 'cpf', 'parentesco'],
+        url_edicao='beneficiarios_update',
+        url_novo='beneficiarios_create',
         search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
+        paginate_by=10
     )
 
 def beneficiarios_create(request):
@@ -16,8 +20,9 @@ def beneficiarios_create(request):
         request,
         form_class=BeneficiariosForm,
         success_url='beneficiarios_list',
-        template_name='beneficiarios_form.html',
-        success_message='Registro criado com sucesso!'
+        template_name='form.html',
+        titulo='Cadastro de Beneficiário',
+        success_message='Beneficiário criado com sucesso!'
     )
 
 def beneficiarios_update(request, pk):
@@ -27,6 +32,7 @@ def beneficiarios_update(request, pk):
         model=Beneficiarios,
         form_class=BeneficiariosForm,
         success_url='beneficiarios_list',
-        template_name='beneficiarios_form.html',
-        success_message='Registro atualizado com sucesso!'
+        template_name='form.html',
+        titulo='Edição de Beneficiário',
+        success_message='Beneficiário atualizado com sucesso!'
     )

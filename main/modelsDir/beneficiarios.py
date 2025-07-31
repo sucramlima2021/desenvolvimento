@@ -12,4 +12,4 @@ class Beneficiarios(models.Model):
     controle = models.CharField(max_length=10, null=True, blank=True)
 
     def __str__(self):
-        return str(self.apolice)
+        return str(f'{self.apolice} - {self.cliente} - {self.nome}')

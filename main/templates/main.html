@@ -1,0 +1,153 @@
+{% load static %}
+{% load atributos %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{title}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .link-item {
+      background-color:rgb(238, 236, 236);
+      transition: background-color 0.2s ease;
+    }
+
+    .link-item:hover {
+      background-color: lightgray;
+      
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row min-vh-100">
+
+      <!-- Sidebar -->
+      <div class="col-2 bg-dark text-white d-flex flex-column justify-content-between p-3">
+        <div>
+          <h5 class="mb-4">Menu</h5>
+          <div class="d-grid gap-2">
+            <button class="btn btn-outline-light">Inicio</button>
+            <button class="btn btn-outline-light">Clientes</button>
+            <button class="btn btn-outline-light">Propostas</button>
+            <button class="btn btn-outline-light">Relatórios</button>
+            <button class="btn btn-outline-light">Sinistros</button>
+            <button class="btn btn-outline-light">Configurações</button>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-outline-danger w-100">Sair</button>
+        </div>
+      </div>
+
+      <!-- Conteúdo principal -->
+      <div class="col-10 p-4">
+        <div class="container">
+          <div class="d-flex justify-content-between mb-3 align-items-center">
+          <h2>{{title}}</h2>
+          <a href="{% url url_novo %}" class="btn btn-success">Cadastrar Cliente</a>
+          </div>
+
+          <form method="get" class="mb-3">
+            <div class="input-group">
+              <input type="text" name="q" class="form-control" placeholder="Buscar por {{campos_busca}}">
+              <button class="btn btn-outline-secondary" type="submit">Buscar</button>
+            </div>
+          </form>
+          
+
+          <div>
+            <div class="d-flex" style="font-size:13px;">
+                    <div class="p-2 " style="width: 300px;"><strong>Nome:</strong> </div>
+                    <div class="p-2 " style="width: 110px;"><strong>CPF:</strong> </div>
+                    <div class="p-2 " style="width: 110px;"><strong>Controle:</strong> </div>
+                    <div class="p-2 " style="width: 160px;"><strong>Apólices:</strong> </div>
+            </div>
+            {% for item in registros %}
+            <a href="{% url url_edicao item.cliente.pk %}" class="text-decoration-none text-dark ">
+              <div class="d-flex border rounded mb-1 link-item flex-column" style="font-size:13px;">
+
+                
+                
+                  <!-- Linha 1: Nome, CPF, Controle -->
+                  <div class="d-flex">
+                    <div class="p-2 " style="width: 300px;"> {{ item.cliente.nome }}</div>
+                    <div class="p-2 " style="width: 110px;"> {{ item.cliente.cpf }}</div>
+                    <div class="p-2 " style="width: 110px;"> {{ item.cliente.controle }}</div>
+                    <div class="d-flex justify-content-end">
+                    {% if item.cifptd %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">CIFPTD</span></div>
+                    
+                    {%endif%}
+
+                    {% if item.sifptd %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">SIFPTD</span></div>
+                    
+                    {%endif%}
+
+                    {% if item.mulher %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Mulher</span></div>
+                    
+                    {%endif%}
+
+                    {% if item.educ %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Educacional</span></div>
+                    
+                    {%endif%}
+
+                    {% if item.decesso %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Decesso</span></div>
+                    
+                    {%endif%}
+                    </div>
+                  </div>
+                
+
+              </div>
+            </a>
+            {% empty %}
+            <div class="alert alert-warning">Nenhum registro encontrado.</div>
+            {% endfor %}
+          </div>
+
+
+          <div class="pagination mt-4">
+            <span class="step-links">
+              {% if page_obj.has_previous %}
+              <a href="?page=1{% if query %}&q={{ query }}{% endif %}">« Primeira</a>
+              <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">‹ Anterior</a>
+              {% endif %}
+
+              <span class="current">
+                Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+              </span>
+
+              {% if page_obj.has_next %}
+              <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Próxima ›</a>
+              <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Última »</a>
+              {% endif %}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+</body>
+
+</html>

@@ -5,7 +5,6 @@ from .apolices_geral import *
 
 class ApolicesM(models.Model):
     apolice = models.ForeignKey(ApolicesGerais, on_delete=models.CASCADE)
-    matricula = models.IntegerField(null=True, blank=True)
     cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
     movimento = models.CharField(max_length=1, null=True, blank=True)
     premio = models.FloatField(null=True, blank=True)
@@ -13,12 +12,7 @@ class ApolicesM(models.Model):
     diagnostico = models.FloatField(null=True, blank=True)
     auxbaba = models.FloatField(null=True, blank=True)
     observacoes = models.TextField(null=True, blank=True)
-    ultimoreajuste = models.DateTimeField(null=True, blank=True)
-    penultimoreajuste = models.DateTimeField(null=True, blank=True)
-    premioanterior = models.FloatField(null=True, blank=True)
     vigencia = models.DateTimeField(null=True, blank=True)
-    premiototal = models.FloatField(null=True, blank=True)
-    custoacessorio = models.FloatField(null=True, blank=True)
     taxa = models.FloatField(null=True, blank=True)
     datacancelamento = models.DateTimeField(null=True, blank=True)
     averbacao = models.DateTimeField(null=True, blank=True)
@@ -29,14 +23,8 @@ class ApolicesM(models.Model):
     nomemulher = models.CharField(max_length=50, null=True, blank=True)
     certificado = models.BooleanField()
     nascimento = models.DateTimeField(null=True, blank=True)
-    cpfm = models.CharField(max_length=20, null=True, blank=True)
     cpfmulher = models.CharField(max_length=20, null=True, blank=True)
     clube = models.CharField(max_length=50, null=True, blank=True)
-    tabela = models.CharField(max_length=50, null=True, blank=True)
-    coluna = models.IntegerField(null=True, blank=True)
-    idade = models.IntegerField(null=True, blank=True)
-    nascimento = models.DateTimeField(null=True, blank=True)
-    alterado = models.BooleanField()
     tabela = models.CharField(max_length=50, null=True, blank=True)
     coluna = models.IntegerField(null=True, blank=True)
     anuencia = models.BooleanField()
@@ -46,12 +34,10 @@ class ApolicesM(models.Model):
     beneficiario2 = models.TextField(null=True, blank=True)
     beneficiario3 = models.TextField(null=True, blank=True)
     tipo = models.CharField(max_length=10, null=True, blank=True)
-    premioant = models.FloatField(null=True, blank=True)
-    isant = models.FloatField(null=True, blank=True)
 
     
     def __str__(self):
-        return str(self.matricula)
+        return str(f'{self.apolice} - {self.cliente}')
 
 class HistoricoM(models.Model):
     apolice = models.ForeignKey(ApolicesM, on_delete=models.CASCADE)

@@ -5,9 +5,13 @@ def apolicesCIFPTD_list(request):
     return base_list_view(
         request,
         model=ApolicesCIFPTD,
-        template_name='apolicesCIFPTD_list.html',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
+        template_name='form/list.html',
+        titulo="Listagem de Apólices CIF/PTD",
+        campos_visiveis=['cliente', 'numero'],
+        url_edicao='apolicesCIFPTD_update',
+        url_novo='apolicesCIFPTD_create',
+        search_fields=['cliente', 'matricula'],
+        paginate_by=10
     )
 
 def apolicesCIFPTD_create(request):
@@ -15,7 +19,7 @@ def apolicesCIFPTD_create(request):
         request,
         form_class=ApolicesCIFPTDForm,
         success_url='apolicesCIFPTD_list',
-        template_name='apolicesCIFPTD_form.html',
+        template_name='form.html',
         success_message='Registro criado com sucesso!'
     )
 
@@ -26,7 +30,7 @@ def apolicesCIFPTD_update(request, pk):
         model=ApolicesCIFPTD,
         form_class=ApolicesCIFPTDForm,
         success_url='apolicesCIFPTD_list',
-        template_name='apolicesCIFPTD_form.html',
+        template_name='form.html',
         success_message='Registro atualizado com sucesso!'
     )
 
@@ -35,7 +39,7 @@ def h_apolicesCIFPTD_list(request):
         request,
         model=HistoricoCIFPTD,
         template_name='h_apolicesCIFPTD_list.html',
-        search_fields=['nome', 'cpf'],
+        search_fields=['apolice'],
         paginate_by=10  # Quantidade de registros por página
     )
 

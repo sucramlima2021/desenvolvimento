@@ -43,7 +43,7 @@ class Clientes(models.Model):
     codaverba = models.CharField(max_length=50, blank=True, null=True)
     sexo = models.CharField(max_length=10, choices=[('M', 'Masculino'), ('F', 'Feminino')], blank=True, null=True)
     empresa = models.CharField(max_length=100, blank=True, null=True)
-    cep = models.IntegerField(blank=True, null=True)
+    cep = models.CharField(max_length=30, blank=True, null=True)
     anuencia = models.CharField(max_length=50, blank=True, null=True)
     correspondencia = models.CharField(max_length=255, blank=True, null=True)
     dataanuencia = models.DateField(blank=True, null=True)
@@ -58,4 +58,8 @@ class Clientes(models.Model):
     Anuencia_Antiga = models.CharField(max_length=50, blank=True, null=True)
     
     def __str__(self):
-        return f'{self.cpf} - {self.nome}'
+        return f'{self.cpf} - {self.nome} - {self.matricula}'
+    
+    
+
+    

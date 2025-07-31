@@ -12,9 +12,6 @@ class ApolicesE(models.Model):
     isbasica = models.FloatField(null=True, blank=True)
     observacoes = models.TextField(null=True, blank=True)
     beneficiarios = models.TextField(null=True, blank=True)
-    ultimoreajuste = models.DateTimeField(null=True, blank=True)
-    penultimoreajuste = models.DateTimeField(null=True, blank=True)
-    premioanterior = models.FloatField(null=True, blank=True)
     vigencia = models.DateTimeField(null=True, blank=True)
     taxa = models.FloatField(null=True, blank=True)
     datacancelamento = models.DateTimeField(null=True, blank=True)
@@ -27,14 +24,12 @@ class ApolicesE(models.Model):
     clube = models.CharField(max_length=50, null=True, blank=True)
     idade = models.IntegerField(null=True, blank=True)
     nascimento = models.DateTimeField(null=True, blank=True)
-    alterado = models.BooleanField()
     tabela = models.CharField(max_length=50, null=True, blank=True)
     coluna = models.IntegerField(null=True, blank=True)
     anuencia = models.BooleanField()
     subconv = models.IntegerField(null=True, blank=True)
     tipo = models.CharField(max_length=10, null=True, blank=True)
-    premioant = models.FloatField(null=True, blank=True)
-    isant = models.FloatField(null=True, blank=True)
+   
     
     def __str__(self):
         return str(self.matricula)
@@ -48,3 +43,5 @@ class HistoricoE(models.Model):
     
     def __str__(self):
         return f'{self.alteracao} - Atual {self.valoratual} - Anterior {self.valorantigo}'
+    
+    
