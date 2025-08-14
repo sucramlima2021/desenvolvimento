@@ -1,61 +1,38 @@
 # views/a2055_views.py
-from .base_views import base_list_view, base_create_view, base_update_view
-from ..models import ApolicesSIFPTD
-from ..formsDir.apolices_sifptd_Form import ApolicesSIFPTD, ApolicesSIFPTDForm, HistoricoSIFPTD, HistoricoSIFPTDForm
-def apolicesSIFPTD_list(request):
-    return base_list_view(
-        request,
-        model=ApolicesSIFPTD,
-        template_name='apolicesSIFPTD_list.html',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
-    )
+from django.shortcuts import render, redirect, get_object_or_404
+from ..formsDir.apolices_sifptd_Form import ApolicesSIFPTD, ApolicesSIFPTDForm
+from django.contrib import messages
+from ..models import Clientes
+from django import forms
 
-def apolicesSIFPTD_create(request):
-    return base_create_view(
-        request,
-        form_class=ApolicesSIFPTDForm,
-        success_url='apolicesSIFPTD_list',
-        template_name='apolicesSIFPTD_form.html',
-        success_message='Registro criado com sucesso!'
-    )
+def apolicesSIFPTD_create(request, pk):
+    instancia = get_object_or_404(Clientes, pk=pk)
+    if request.method == 'POST':
+        form = ApolicesSIFPTDForm(request.POST)
+        form.instance.cliente = instancia
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registro criado com sucesso!')
+            return redirect('clientes')
+        else:
+            print(form.errors)
+    else:
+        form = ApolicesSIFPTDForm()
+        
+
+    return render(request, 'form_cifptd.html', {'form': form, 'title': 'Cadastro de Apólices SIFPTD', 'cliente': instancia, 'novo':True})
 
 def apolicesSIFPTD_update(request, pk):
-    return base_update_view(
-        request,
-        pk=pk,
-        model=ApolicesSIFPTD,
-        form_class=ApolicesSIFPTDForm,
-        success_url='apolicesSIFPTD_list',
-        template_name='apolicesSIFPTD_form.html',
-        success_message='Registro atualizado com sucesso!'
-    )
+    instancia = get_object_or_404(ApolicesSIFPTD, pk=pk)
+    if request.method == 'POST':
+        form = ApolicesSIFPTDForm(request.POST, instance=instancia)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registro alterado com sucesso!')
+            return redirect('clientes')
+    else:
+        form = ApolicesSIFPTDForm(instance=instancia)
+        form.fields['apolice'].widget = forms.HiddenInput()
 
-def h_apolicesSIFPTD_list(request):
-    return base_list_view(
-        request,
-        model=HistoricoSIFPTD,
-        template_name='h_apolicesSIFPTD_list.html',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
-    )
-
-def h_apolicesSIFPTD_create(request):
-    return base_create_view(
-        request,
-        form_class=HistoricoSIFPTDForm,
-        success_url='h_apolicesSIFPTD_list',
-        template_name='h_apolicesSIFPTD_form.html',
-        success_message='Registro criado com sucesso!'
-    )
-
-def h_apolicesSIFPTD_update(request, pk):
-    return base_update_view(
-        request,
-        pk=pk,
-        model=HistoricoSIFPTD,
-        form_class=HistoricoSIFPTDForm,
-        success_url='h_apolicesSIFPTD_list',
-        template_name='h_apolicesSIFPTD_form.html',
-        success_message='Registro atualizado com sucesso!'
-    )
+    return render(request, 'form_sifptd.html', {'form': form, 'title': 'Alteração de Apólices SIFPTD', 'cliente':instancia.cliente, 'apolice':instancia})
+    

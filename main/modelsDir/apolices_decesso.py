@@ -1,40 +1,20 @@
 from django.db import models
 from .clientes import *
-class Decesso(models.Model):
-    matricula = models.FloatField( null=True, blank=True)
-    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
-    premio = models.FloatField( null=True, blank=True)
+from .angariadores import Angariadores
+from .apolices_geral import *
+
+class Decesso(ApoliceBase):
     taxa = models.FloatField( null=True, blank=True)
-    movimento = models.CharField(max_length=255, null=True, blank=True)
     observacoes = models.TextField( null=True, blank=True)
-    controle = models.CharField(max_length=255, null=True, blank=True)
-    angariador = models.CharField(max_length=255, null=True, blank=True)
-    vigencia = models.DateTimeField( null=True, blank=True)
-    inicio = models.DateTimeField( null=True, blank=True)
-    datacancelamento = models.DateTimeField( null=True, blank=True)
-    producao = models.DateTimeField( null=True, blank=True)
-    averbacao = models.DateTimeField( null=True, blank=True)
-    certificado = models.BooleanField()  # Tipo original: BIT
+    angariador = models.ForeignKey(Angariadores, on_delete=models.PROTECT, null=True, blank=True)
+    datacancelamento = models.DateField( null=True, blank=True)
+    producao = models.DateField( null=True, blank=True)
+    averbacao = models.DateField( null=True, blank=True)
     clube = models.CharField(max_length=255, null=True, blank=True)
-    anuencia = models.BooleanField()  # Tipo original: BIT
-    subconv = models.IntegerField( null=True, blank=True)  # Tipo original: SMALLINT
-    codunid = models.IntegerField( null=True, blank=True)  # Tipo original: SMALLINT
-    tipo = models.CharField(max_length=255, null=True, blank=True)
-    
+    anuencia = models.BooleanField(default=False)  
+    subconv = models.IntegerField( null=True, blank=True)  
+    codunid = models.IntegerField( null=True, blank=True)  
 
     def __str__(self):
-        return str(f'Decesso - {self.cliente}')
-
-class HistoricoDecesso(models.Model):
-    apolice = models.ForeignKey(Decesso, on_delete=models.CASCADE)
-    alteracao = models.CharField(max_length=255)
-    valoratual = models.CharField(max_length=255)
-    valorantigo = models.CharField(max_length=255)
-    observacoes = models.TextField()
-    
-    def __str__(self):
-        return f'{self.alteracao} - Atual {self.valoratual} - Anterior {self.valorantigo}'
-    
-    
-
-   
+        base = super().__str__()
+        return base

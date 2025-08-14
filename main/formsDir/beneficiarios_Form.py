@@ -4,6 +4,6 @@ from .bases import BaseClienteForm
 
 class BeneficiariosForm(BaseClienteForm):
     class Meta:
-        model = Beneficiarios
+        model = BeneficiariosNovos
         fields = '__all__'
 

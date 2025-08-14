@@ -69,4 +69,4 @@ def base_update_view(request, pk, model, form_class, success_url, template_name,
     else:
         form = form_class(instance=instancia)
 
-    return render(request, template_name, {'form': form, 'back_url': success_url, 'title': titulo})
+    return render(request, template_name, {'form': form, 'back_url': success_url, 'title': titulo, 'cliente':instancia})

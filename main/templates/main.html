@@ -29,16 +29,16 @@
         <div>
           <h5 class="mb-4">Menu</h5>
           <div class="d-grid gap-2">
-            <button class="btn btn-outline-light">Inicio</button>
-            <button class="btn btn-outline-light">Clientes</button>
-            <button class="btn btn-outline-light">Propostas</button>
-            <button class="btn btn-outline-light">Relatórios</button>
-            <button class="btn btn-outline-light">Sinistros</button>
-            <button class="btn btn-outline-light">Configurações</button>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-light">Inicio</a>
+            <a class="btn btn-light">Clientes</a>
+            <a class="btn btn-outline-light">Propostas</a>
+            <a class="btn btn-outline-light">Relatórios</a>
+            <a href="{% url 'sinistros_list' %}" class="btn btn-outline-light">Sinistros</a>
+            <a class="btn btn-outline-light">Configurações</a>
           </div>
         </div>
         <div>
-          <button class="btn btn-outline-danger w-100">Sair</button>
+          <a class="btn btn-outline-danger w-100">Sair</a>
         </div>
       </div>
 
@@ -62,7 +62,7 @@
             <div class="d-flex" style="font-size:13px;">
                     <div class="p-2 " style="width: 300px;"><strong>Nome:</strong> </div>
                     <div class="p-2 " style="width: 110px;"><strong>CPF:</strong> </div>
-                    <div class="p-2 " style="width: 110px;"><strong>Controle:</strong> </div>
+                    <div class="p-2 " style="width: 110px;"><strong>Matrícula:</strong> </div>
                     <div class="p-2 " style="width: 160px;"><strong>Apólices:</strong> </div>
             </div>
             {% for item in registros %}
@@ -75,7 +75,7 @@
                   <div class="d-flex">
                     <div class="p-2 " style="width: 300px;"> {{ item.cliente.nome }}</div>
                     <div class="p-2 " style="width: 110px;"> {{ item.cliente.cpf }}</div>
-                    <div class="p-2 " style="width: 110px;"> {{ item.cliente.controle }}</div>
+                    <div class="p-2 " style="width: 110px;"> {{ item.cliente.matricula }}</div>
                     <div class="d-flex justify-content-end">
                     {% if item.cifptd %}
                     <div class="p-2"><span class="border rounded bg-success p-1 text-white"
@@ -104,6 +104,26 @@
                     {% if item.decesso %}
                     <div class="p-2"><span class="border rounded bg-success p-1 text-white"
                         style="font-size:10px;">Decesso</span></div>
+                    
+                    {%endif%}
+                    {% if item.vida %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Vida</span></div>
+                    
+                    {%endif%}
+                    {% if item.residencia %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Residência</span></div>
+                    
+                    {%endif%}
+                    {% if item.carro %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Carro</span></div>
+                    
+                    {%endif%}
+                    {% if item.moto %}
+                    <div class="p-2"><span class="border rounded bg-success p-1 text-white"
+                        style="font-size:10px;">Moto</span></div>
                     
                     {%endif%}
                     </div>

@@ -9,7 +9,7 @@ class ClienteSelectWidget(ModelSelect2Widget):
     search_fields = ['nome__icontains', 'cpf__icontains']
 
     def label_from_instance(self, obj):
-        return f'{obj.cpf} - {obj.nome}'
+        return f'{obj.nome} - {obj.cpf}'
 
 class BaseClienteForm(forms.ModelForm):
     """Formulário base para modelos que têm um campo 'cliente'."""

@@ -1,29 +1,22 @@
 from django.db import models
 from .clientes import *
 from .apolices_geral import *
+from .beneficiarios import *
+from .angariadores import *
 
-
-class ApolicesM(models.Model):
-    apolice = models.ForeignKey(ApolicesGerais, on_delete=models.CASCADE)
-    cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
-    movimento = models.CharField(max_length=1, null=True, blank=True)
-    premio = models.FloatField(null=True, blank=True)
-    isbasica = models.FloatField(null=True, blank=True)
-    diagnostico = models.FloatField(null=True, blank=True)
-    auxbaba = models.FloatField(null=True, blank=True)
+class ApolicesM(ApoliceBase):
+    isbasica = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    diagnostico = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    auxbaba = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     observacoes = models.TextField(null=True, blank=True)
-    vigencia = models.DateTimeField(null=True, blank=True)
-    taxa = models.FloatField(null=True, blank=True)
-    datacancelamento = models.DateTimeField(null=True, blank=True)
-    averbacao = models.DateTimeField(null=True, blank=True)
-    producao = models.DateTimeField(null=True, blank=True)
-    inicio = models.DateTimeField(null=True, blank=True)
-    angariador = models.CharField(max_length=50, null=True, blank=True)
-    controle = models.CharField(max_length=15, null=True, blank=True)
-    nomemulher = models.CharField(max_length=50, null=True, blank=True)
-    certificado = models.BooleanField()
-    nascimento = models.DateTimeField(null=True, blank=True)
-    cpfmulher = models.CharField(max_length=20, null=True, blank=True)
+    taxa = models.DecimalField(max_digits=7, decimal_places=4, null=True, blank=True)
+    datacancelamento = models.DateField(null=True, blank=True)
+    averbacao = models.DateField(null=True, blank=True)
+    producao = models.DateField(null=True, blank=True) 
+    angariador = models.ForeignKey(Angariadores, on_delete=models.PROTECT, null=True, blank=True)
+    nome = models.CharField(max_length=50, null=True, blank=True)
+    nascimento = models.DateField(null=True, blank=True)
+    cpf = models.CharField(max_length=20, null=True, blank=True)
     clube = models.CharField(max_length=50, null=True, blank=True)
     tabela = models.CharField(max_length=50, null=True, blank=True)
     coluna = models.IntegerField(null=True, blank=True)
@@ -33,18 +26,9 @@ class ApolicesM(models.Model):
     beneficiario1 = models.TextField(null=True, blank=True)
     beneficiario2 = models.TextField(null=True, blank=True)
     beneficiario3 = models.TextField(null=True, blank=True)
-    tipo = models.CharField(max_length=10, null=True, blank=True)
-
+    
+    #beneficiariosNovos = models.ManyToManyField(BeneficiariosNovos, through="MulherBeneficiario", related_name="ApolicesM", blank=True)
     
     def __str__(self):
-        return str(f'{self.apolice} - {self.cliente}')
-
-class HistoricoM(models.Model):
-    apolice = models.ForeignKey(ApolicesM, on_delete=models.CASCADE)
-    alteracao = models.CharField(max_length=255)
-    valoratual = models.CharField(max_length=255)
-    valorantigo = models.CharField(max_length=255)
-    observacoes = models.TextField()
-    
-    def __str__(self):
-        return f'{self.alteracao} - Atual {self.valoratual} - Anterior {self.valorantigo}'
+        base = super().__str__()
+        return base

@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cliente: {{cliente.nome}}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .botao {
+      background-color: lightblue;
+      transition: background-color 0.2s ease;
+      text-decoration: none;
+      color: black;
+    }
+
+    .botao:hover {
+      background-color: lightgreen;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex">
+    <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100" style="min-height: 100vh;">
+      <div>
+        <h5 class="mb-4">Menu</h5>
+        <div class="d-grid gap-2">
+          <a href="#" class="btn btn-light">Resumo</a>
+          <a href="" class="btn btn-outline-light">Alterar Cadastro</a>
+          <a class="btn btn-outline-light">Emitir Certificado</a>
+          <a class="btn btn-outline-light">Incluir Sinistro</a>
+          <a class="btn btn-outline-light">Incluir Apólice</a>
+          <a class="btn btn-outline-danger">Excluir Cliente</a>
+          <a href="{%url 'clientes'%}" class="btn btn-outline-light my-5">Inicio</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-10">
+      
+        <div class="d-flex mt-2 flex-column">
+          <h4 class="me-3">Cliente: {{cliente.nome}}</h4>
+          <h4 class="me-3">Matricula: {{cliente.matricula}}</h4>        
+      </div>
+      <div class="d-flex mt-5 ">
+        <div class="d-flex flex-column border p-2">
+            <h5 class="m-1 text-center">CIFPTD</h5>
+            
+            <a class="btn btn-primary m-1" href="{%url 'apolicesCIFPTD_create' cliente.pk%}">Incluir</a>
+        </div>
+
+        <div class="d-flex flex-column border p-2">
+            <h5 class="m-1 text-center">SIFPTD</h5>
+            
+            <a class="btn btn-primary m-1" href="{%url 'apolicesSIFPTD_create' cliente.pk%}">Incluir</a>
+        </div>
+
+        <div class="d-flex flex-column border p-2">
+            <h5 class="m-1 text-center">MULHER</h5>
+            
+            <a class="btn btn-primary m-1" href="{%url 'apolicesMulher_create' cliente.pk%}">Incluir</a>
+        </div>
+
+        <div class="d-flex flex-column border p-2">
+            <h5 class="m-1 text-center">EDUCACIONAL</h5>
+            
+            <a class="btn btn-primary m-1" href="{%url 'apolicesE_create' cliente.pk%}">Incluir</a>
+        </div>
+
+        <div class="d-flex flex-column border p-2">
+            <h5 class="m-1 text-center">DECESSO</h5>
+            
+            <a class="btn btn-primary m-1" href="{%url 'decesso_create' cliente.pk%}">Incluir</a>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

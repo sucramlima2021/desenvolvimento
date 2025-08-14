@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<h1 class="h4">Excluir sinistro</h1>
+<p class="text-muted">Tem certeza que deseja excluir o sinistro <strong>#{{ object.id }}</strong> de <strong>{{ object.cliente.nome }}</strong> (apólice {{ object.apolice.nome }})?</p>
+<form method="post" class="d-flex gap-2">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger">Sim, excluir</button>
+  <a href="{% url 'sinistros_list' %}" class="btn btn-outline-secondary">Cancelar</a>
+</form>
+{% endblock %}

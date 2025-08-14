@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="h4 mb-0">{% if object %}Editar{% else %}Novo{% endif %} sinistro</h1>
+  <a href="{% url 'sinistros_list' %}" class="btn btn-outline-secondary">Voltar</a>
+</div>
+
+<form method="post" class="row g-3">
+  {% csrf_token %}
+  <div class="col-md-6">
+    <label class="form-label">Cliente</label>
+    {{ form.cliente }}
+  </div>
+  <div class="col-md-6">
+    <label class="form-label">Apólice</label>
+    {{ form.apolice }}
+  </div>
+
+  <div class="col-md-2">
+    <div class="form-check mt-4">
+      {{ form.titular }} <label class="form-check-label">Titular?</label>
+    </div>
+  </div>
+
+  <div class="col-md-2"><label class="form-label">Prêmio</label>{{ form.premio }}</div>
+  <div class="col-md-2"><label class="form-label">IS</label>{{ form.Is }}</div>
+  <div class="col-md-2"><label class="form-label">IEA (diag.)</label>{{ form.iea_diag }}</div>
+  <div class="col-md-2"><label class="form-label">IPA (aux.)</label>{{ form.ipa_aux }}</div>
+  <div class="col-md-2"><label class="form-label">IFPTD</label>{{ form.ifptd }}</div>
+
+  <div class="col-md-2"><label class="form-label">Valor</label>{{ form.valor }}</div>
+  <div class="col-md-2"><label class="form-label">Data</label>{{ form.data }}</div>
+  <div class="col-md-4"><label class="form-label">Tipo</label>{{ form.tipo }}</div>
+  <div class="col-12"><label class="form-label">Observações</label>{{ form.observacoes }}</div>
+
+  <div class="col-md-4"><label class="form-label">Tipo de morte</label>{{ form.tipo_morte }}</div>
+  <div class="col-md-2"><label class="form-label">Data óbito</label>{{ form.data_obito }}</div>
+  <div class="col-md-2"><label class="form-label">Data COM VG</label>{{ form.data_com_vg }}</div>
+  <div class="col-md-2"><label class="form-label">Data COM CIA</label>{{ form.data_com_cia }}</div>
+
+  <div class="col-md-2">
+    <div class="form-check mt-4">
+      {{ form.pago_recusa }} <label class="form-check-label">Pago/Recusado</label>
+    </div>
+  </div>
+  <div class="col-md-2"><label class="form-label">Data recusa/pagto</label>{{ form.data_recusa_pg }}</div>
+
+  <div class="col-md-5"><label class="form-label">Nome do segurado</label>{{ form.nome_segurado }}</div>
+  <div class="col-md-3"><label class="form-label">CPF do segurado</label>{{ form.cpf_segurado }}</div>
+  <div class="col-md-4"><label class="form-label">Controle</label>{{ form.controle }}</div>
+
+  <div class="col-12 d-flex gap-2">
+    <button class="btn btn-primary" type="submit">Salvar</button>
+    <a class="btn btn-outline-secondary" href="{% url 'sinistros_list' %}">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

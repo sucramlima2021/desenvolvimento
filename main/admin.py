@@ -8,8 +8,14 @@ admin.site.register(ApolicesGerais)
 admin.site.register(ApolicesM)
 admin.site.register(ApolicesE)
 admin.site.register(Decesso)
-admin.site.register(Beneficiarios)
+admin.site.register(BeneficiariosNovos)
+admin.site.register(Angariadores)
 admin.site.register(Agregados)
-
+admin.site.register(ApolicesResidencia)
+admin.site.register(ApolicesVida)
+admin.site.register(ApolicesMoto)
+admin.site.register(ApolicesCarro)
+admin.site.register(Sinistros)
+admin.site.register(ApoliceBase)
 
 # Register your models here.

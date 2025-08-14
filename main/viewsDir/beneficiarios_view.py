@@ -1,11 +1,11 @@
 from .base_views import base_list_view, base_create_view, base_update_view
-from ..models import Beneficiarios
+from ..models import BeneficiariosNovos
 from ..formsDir.beneficiarios_Form import BeneficiariosForm
 
 def beneficiarios_list(request):
     return base_list_view(
         request,
-        model=Beneficiarios,
+        model=BeneficiariosNovos,
         template_name='list.html',
         titulo="Listagem de Beneficiários",
         campos_visiveis=['nome', 'cpf', 'parentesco'],
@@ -29,7 +29,7 @@ def beneficiarios_update(request, pk):
     return base_update_view(
         request,
         pk=pk,
-        model=Beneficiarios,
+        model=BeneficiariosNovos,
         form_class=BeneficiariosForm,
         success_url='beneficiarios_list',
         template_name='form.html',

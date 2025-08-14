@@ -1,19 +1,27 @@
 from django import forms
 from ..modelsDir.apolices_decesso import *
-from .bases import BaseClienteForm
+from ..modelsDir.angariadores import *
 
-class DecessoForm(BaseClienteForm):
+
+class DecessoForm(forms.ModelForm):
     class Meta:
         model = Decesso
         fields = '__all__'
+        widgets = {
+            'movimento': forms.RadioSelect(choices=Decesso.STATUS_CHOICES,attrs={'class': 'form-check-input'}),
+            'datacancelamento': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'averbacao': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'producao': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'inicio': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'vigencia': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'angariador': AngariadorSelectWidget(attrs={'data-placeholder':'Selecione um angariador...', 'style':'width:100%', 'data-minimum-input-length': 0},)        
+        }
+        exclude = ('cliente',)
 
-class HistoricoDecessoForm(forms.ModelForm):
-    class Meta:
-        model = HistoricoDecesso
-        fields = '__all__'
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             existing_classes = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = f'{existing_classes} form-control'
+            if not isinstance(field.widget, forms.RadioSelect):
+                field.widget.attrs['class'] = f'{existing_classes} form-control form-control-sm'
+        self.fields["apolice"].queryset = ApolicesGerais.objects.filter(tipo='decesso')

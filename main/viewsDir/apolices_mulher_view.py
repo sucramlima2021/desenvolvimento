@@ -1,61 +1,39 @@
-# views/a2055_views.py
-from .base_views import base_list_view, base_create_view, base_update_view
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from ..models import Clientes
+from django import forms
+from ..formsDir.apolices_mulher_Form import ApolicesM, ApolicesMForm
 
-from ..formsDir.apolices_mulher_Form import ApolicesM, ApolicesMForm, HistoricoM, HistoricoMForm
-def apolicesM_list(request):
-    return base_list_view(
-        request,
-        model=ApolicesM,
-        template_name='apolicesM_list.html',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
-    )
 
-def apolicesM_create(request):
-    return base_create_view(
-        request,
-        form_class=ApolicesMForm,
-        success_url='apolicesM_list',
-        template_name='apolicesM_form.html',
-        success_message='Registro criado com sucesso!'
-    )
+def apolicesMulher_create(request, pk):
+    instancia = get_object_or_404(Clientes, pk=pk)
+    if request.method == 'POST':
+        form = ApolicesMForm(request.POST)
+        form.instance.cliente = instancia
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registro criado com sucesso!')
+            return redirect('clientes')
+    else:
+        form = ApolicesMForm()
+        
 
-def apolicesM_update(request, pk):
-    return base_update_view(
-        request,
-        pk=pk,
-        model=ApolicesM,
-        form_class=ApolicesMForm,
-        success_url='apolicesM_list',
-        template_name='apolicesM_form.html',
-        success_message='Registro atualizado com sucesso!'
-    )
+    return render(request, 'form_mulher.html', {'form': form, 'title': 'Cadastro de Apólices MULHER', 'cliente': instancia, 'novo':True})
 
-def h_apolicesM_list(request):
-    return base_list_view(
-        request,
-        model=HistoricoM,
-        template_name='h_apolicesM_list.html',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
-    )
+def apolicesMulher_update(request, pk):
+    instancia = get_object_or_404(ApolicesM, pk=pk)
+    if request.method == 'POST':
+        form = ApolicesMForm(request.POST, instance=instancia)    
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Registro alterado com sucesso!')
+            return redirect('clientes')
+        else:
+            print(form.errors)
+    else:
+        form = ApolicesMForm(instance=instancia)
+        form.fields['apolice'].widget = forms.HiddenInput()
 
-def h_apolicesM_create(request):
-    return base_create_view(
-        request,
-        form_class=HistoricoMForm,
-        success_url='h_apolicesM_list',
-        template_name='h_apolicesM_form.html',
-        success_message='Registro criado com sucesso!'
-    )
+    return render(request, 'form_mulher.html', {'form': form, 'title': 'Alteração de Apólices MULHER', 'cliente':instancia.cliente, 'apolice':instancia, })
+    
 
-def h_apolicesM_update(request, pk):
-    return base_update_view(
-        request,
-        pk=pk,
-        model=HistoricoM,
-        form_class=HistoricoMForm,
-        success_url='h_apolicesM_list',
-        template_name='h_apolicesM_form.html',
-        success_message='Registro atualizado com sucesso!'
-    )

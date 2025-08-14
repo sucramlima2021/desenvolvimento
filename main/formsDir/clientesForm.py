@@ -6,10 +6,10 @@ class ClientesForm(forms.ModelForm):
         model = Clientes
         fields = '__all__'
         widgets = {
-            'nascimento': forms.DateInput(attrs={'type': 'date'}),
-            'expedicao': forms.DateInput(attrs={'type': 'date'}),
-            'nascimentoconjuge': forms.DateInput(attrs={'type': 'date'}),
-            'dataanuencia': forms.DateInput(attrs={'type': 'date'}),
+            'nascimento': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'expedicao': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'nascimentoconjuge': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'dataanuencia': forms.DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
             'master': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
@@ -17,4 +17,4 @@ class ClientesForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             existing_classes = field.widget.attrs.get('class', '')
-            field.widget.attrs['class'] = f'{existing_classes} form-control'
+            field.widget.attrs['class'] = f'{existing_classes} form-control form-control-sm'

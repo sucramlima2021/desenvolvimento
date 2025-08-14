@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="d-flex">
+        <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100">
+      <div>
+        <h5 class="mb-4">Menu</h5>
+        <div class="d-grid gap-2">
+            {%if cliente.pk%}
+          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
+          
+          <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
+          
+          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
+          {%else%}
+          <button type="submit" form="meuForm" class="btn btn-outline-light mb-5">Salvar</button>
+          {%endif%}
+          
+          <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
+        </div>
+      </div>
+
+    </div>
+        <div class="col-10 bg-light">
+        <h2 class="mb-4 text-center">{{title}}</h2>
+
+        <form method="post" id="meuForm">
+            {% csrf_token %}
+            <div class="bg-secondary"><span class="text-light mx-2">Principal</span></div>
+            <div class="d-flex  p-2">
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Matrícula</label>
+                    {{form.matricula}}
+                </div>
+                <div class="col-md-8 col-sm-12 px-1">
+                    <label class="form-label">Nome</label>
+                    {{form.nome}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">CPF</label>
+                    {{form.cpf}}
+                </div>
+                
+            </div>
+
+            <!-- Endereço -->
+             <div class="bg-secondary"><span class="text-light mx-2">Endereço</span></div>
+            <div class="d-flex pt-2 pe-2 ps-2">
+                <div class="col-md-7 col-sm-12 px-1">
+                    <label class="form-label">Endereço</label>
+                    {{form.logradouro}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Número</label>
+                    {{form.numero}}
+                </div>
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Complemento</label>
+                    {{form.complemento}}
+                </div>
+            </div>
+
+            <!-- Bairro, Cidade, UF, CEP -->
+            <div class="d-flex px-2">
+                <div class="col-md-4 col-sm-12 px-1">
+                    <label class="form-label">Bairro</label>
+                    {{form.bairro}}
+                </div>
+                <div class="col-md-5 col-sm-12 px-1">
+                    <label class="form-label">Cidade</label>
+                    {{form.cidade}}
+                </div>
+                <div class="col-md-1 col-sm-12 px-1">
+                    <label class="form-label">UF</label>
+                    {{form.uf}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">CEP</label>
+                    {{form.cep}}
+                </div>
+            </div>
+
+            <div class="d-flex px-2 pb-2">
+                <div class="col-md-12 col-sm-12 px-1">
+                    <label class="form-label">Segundo Endereço</label>
+                    {{form.segundoendereco}}
+                </div>
+                
+            </div>
+
+            <!-- Contatos -->
+             <div class="bg-secondary"><span class="text-light mx-2">Contatos</span></div>
+            <div class="d-flex  p-2">
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Telefone</label>
+                    {{form.telefone}}
+                </div>
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Celular</label>
+                    {{form.celulares}}
+                </div>
+                <div class="col-md-6 col-sm-12 px-1">
+                    <label class="form-label">E-mail</label>
+                    {{form.email}}
+                </div>
+            </div>
+
+            <!-- Nascimento, Idade, Estado Civil -->
+             <div class="bg-secondary"><span class="text-light mx-2">Informações pessoais</span></div>
+            <div class="d-flex  p-2">
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Nascimento</label>
+                    {{form.nascimento}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Sexo</label>
+                    {{form.sexo}}
+                </div>
+
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Est. Civil</label>
+                    <select class="form-select" name="estado_civil">
+                        <option value="">Selecione</option>
+                        <option value="casado">Casado</option>
+                        <option value="solteiro">Solteiro</option>
+                        <option value="divorciado">Divorciado</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Doc. Ident.</label>
+                    {{form.identidade}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Órgão Emissor</label>
+                    {{form.orgao}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Data Exp.</label>
+                    {{form.expedicao}}
+                </div>
+            </div>
+
+            <!-- Dados Profissionais -->
+             <div class="bg-secondary"><span class="text-light mx-2">Dados Profissionais</span></div>
+            <div class="d-flex pt-2 pe-2 ps-2">
+                <div class="col-md-6 col-sm-12 px-1">
+                    <label class="form-label">Cargo</label>
+                    {{form.cargo}}
+                </div>
+                <div class="col-md-4 col-sm-12 px-1">
+                    <label class="form-label">Função</label>
+                    {{form.funcao}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Salário</label>
+                    {{form.salario}}
+                </div>
+            </div>
+            <div class="d-flex pe-2 ps-2 pb-2">
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Cód. Averba.</label>
+                    {{form.codaverba}}
+                </div>
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">SubConv</label>
+                    {{form.subconv}}
+                </div>
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Unidade</label>
+                    {{form.codunid}}
+                </div>
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Cód Clube</label>
+                    {{form.codclube}}
+                </div>
+            </div>
+
+            <!-- Banco -->
+             <div class="bg-secondary"><span class="text-light mx-2">Dados bancários</span></div>
+            <div class="d-flex  p-2">
+                <div class="col-md-3 col-sm-12 px-1">
+                    <label class="form-label">Banco</label>
+                    {{form.banco}}
+                </div>
+                <div class="col-md-1 col-sm-12 px-1">
+                    <label class="form-label">Agência</label>
+                    {{form.agencia}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">C/C</label>
+                    {{form.cc}}
+                </div>
+            </div>
+
+            <div class="bg-secondary"><span class="text-light mx-2">Conjuge</span></div>
+            <div class="d-flex  p-2">
+                <div class="col-md-6 col-sm-12 px-1">
+                    <label class="form-label">Nome</label>
+                    {{form.conjuge}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Nasimento</label>
+                    {{form.nascimentoconjuge}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">CPF</label>
+                    {{form.cpfconjuge}}
+                </div>
+                <div class="col-md-2 col-sm-12 px-1">
+                    <label class="form-label">Sexo</label>
+                    {{form.sexoconjuge}}
+                </div>
+            </div>
+
+            <!-- Observações -->
+             <div class="bg-secondary"><span class="text-light mx-2">Observações</span></div>
+            <div class="mb-3 p-2">
+                <label class="form-label">Observações</label>
+                {{form.observacoes}}
+            </div>
+
+
+            
+        </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

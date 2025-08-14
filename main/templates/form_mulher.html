@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="d-flex">
+  <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100">
+      <div>
+        <h5 class="mb-4">Menu</h5>
+        <div class="d-grid gap-2">
+        {%if cliente.pk%}
+          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
+          
+          <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
+          
+          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
+          {%else%}
+          <button type="submit" form="meuForm" class="btn btn-outline-light mb-5">Salvar</button>
+          {%endif%}
+          
+          <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
+        </div>
+      </div>
+
+    </div>
+  <div class="col-10">
+    <h4 class="text-center border-bottom my-2">Cadastrar / Alterar apólices MULHER</h4>
+  <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
+  
+  <div class=" p-2">
+    <form method="post" id="meuForm">
+        {% csrf_token %}
+       {%if novo%}
+       <div class="d-flex mb-3">
+        <label class="form-label mx-3">Apólice:</label>
+       {{form.apolice}}
+       </div>
+       {%else%}
+       {{form.apolice}}
+        <h6 class="mx-2">Apólice: {{apolice.apolice.nome}}</h6>
+        {% endif %}
+  <!-- Titular -->
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      Segurada
+    </div>
+    <div class="card-body">
+      
+      <!-- Situação -->
+      <div class="mb-3">
+        <label class="form-label me-3">Situação:</label>
+       {% for radio in form.movimento %}
+        <div class="form-check form-check-inline">
+            {{ radio.tag }}
+            <label class="form-check-label">{{ radio.choice_label }}</label>
+        </div>
+    {% endfor %}
+      </div>
+
+      <!-- Datas -->
+      <div class="row mb-3 border-top">
+        <div class="col-md-3">
+          <label class="form-label">Clube</label>
+          {{form.clube}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Angariador</label>
+          {{form.angariador}}
+        </div>
+        
+        
+      </div>
+
+      <div class="row mb-3 border-top">
+        <div class="col-md-6">
+          <label class="form-label">Nome</label>
+          {{form.nome}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">CPF</label>
+          {{form.cpf}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Nascimento</label>
+          {{form.nascimento}}
+        </div>
+      </div>
+
+      <div class="row mb-3 border-top">
+        <div class="col-md-3">
+          <label class="form-label">Produção</label>
+          {{form.producao}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Averbação</label>
+          {{form.averbacao}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Inicio</label>
+          {{form.inicio}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Vigência</label>
+          {{form.vigencia}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Canc. / Sinistro</label>
+          {{form.datacancelamento}}
+        </div>
+      </div>
+
+      <div class="row mb-3 border-top">
+        <div class="col-md-2">
+          <label class="form-label">Premio</label>
+          {{form.premio}}
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Taxa</label>
+          {{form.taxa}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">IS Básica</label>
+          {{form.isbasica}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Diagnóstico</label>
+          {{form.diagnostico}}
+        </div>
+        <div class="col-md-2">
+          <label class="form-label">Aux. Baba</label>
+          {{form.auxbaba}}
+        </div>
+      </div>
+         
+  <!-- Observações -->
+  <div class="mb-3">
+    <label class="form-label">Observações</label>
+    {{form.observacoes}}
+  </div>
+
+  <!-- Beneficiários -->
+  <div class="mb-3">
+    <label class="form-label">Beneficiários</label>
+    {{form.beneficiario1}}
+  </div>
+
+  <!-- Botões -->
+    </form>
+    {%if beneficiarios%}
+    <div class="mb-3">
+    <label class="form-label">Beneficiários Novos</label>
+    
+    <div class="d-flex flex-column">
+      <div class="d-flex">
+        <div class="col-5 border">Nome:</div>
+        <div class="col-3 border">Nascimento:</div>
+        <div class="col-2 border">Parentesco:</div>
+        <div class="col-2 border">Percentual:</div>
+  </div>
+  {%for benef in beneficiarios%}
+  <div class="d-flex">
+        <div class="col-5 border">{{benef.nome}}</div>
+        <div class="col-3 border">{{benef.nascimento}}</div>
+        <div class="col-2 border">{{benef.parentesco}}</div>
+        <div class="col-2 border">{{benef.percentual}}</div>
+           
+  </div>
+  {%endfor%}
+  </div>
+</div>
+{%endif%}
+  </div>
+</div>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

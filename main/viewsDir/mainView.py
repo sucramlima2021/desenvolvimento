@@ -1,66 +1,85 @@
 # views/a2055_views.py
-from django.shortcuts import render, redirect, get_object_or_404
-from django.db.models import Q
-from django.core.paginator import Paginator
-from django.contrib import messages
+# views.py
+from datetime import date
+from decimal import Decimal
+from itertools import chain
+from django.db.models import Q, F, Sum, Value, DecimalField, ExpressionWrapper
+from django.db.models.functions import Coalesce
+from django.shortcuts import render, HttpResponse
+
+# IMPORTS alinhados aos seus arquivos
 from ..models import *
-from ..formsDir.clientesForm import ClientesForm
-def principal(request):
-    return base_list_view(
-        request,
-        model=Clientes,
-        template_name='main.html',
-        titulo = "Listagem de Clientes",
-        campos_visiveis=['nome', 'cpf', 'controle'],
-        url_edicao = 'seleciona_cliente',
-        url_novo = 'clientes_create',
-        url_apagar = 'clientes_delete',
-        search_fields=['nome', 'cpf'],
-        paginate_by=10  # Quantidade de registros por página
+# Constantes de status conforme STATUS_CHOICES nas suas models
+
+def dashboard(request):
+    #  TOTAL DE APÓLICES ATIVAS POR TIPO =====
+    tipos = ApolicesGerais.TIPOS
+    ativas_por_tipo=[]
+    for tipo in tipos:
+        apolices = ApoliceBase.objects.filter(movimento='A', apolice__tipo=tipo[0])
+        ativas_por_tipo.append({'tipo':tipo[1], 'total':len(apolices)})
+
+    # TOTAL DE PRÊMIO (geral) 
+    premio_total = ApoliceBase.objects.filter(movimento='A').aggregate(total=Sum('premio'))['total'] or Decimal('0')
+
+    premioc_total = Decimal('0')
+
+    premioc_total += ApolicesCIFPTD.objects.filter(movimentoconjuge='A').aggregate(total=Sum('premioconjuge'))['total'] or Decimal('0')
+    premioc_total += ApolicesSIFPTD.objects.filter(movimentoconjuge='A').aggregate(total=Sum('premioconjuge'))['total'] or Decimal('0')
+
+    total_premio_geral = premio_total + premioc_total
+    
+    # top 10 apólices em uma lista com a soma prêmio+conjuge
+    DEC = DecimalField(max_digits=18, decimal_places=2)
+    
+    total_expr = (
+        Coalesce(F('premio'), Value(Decimal('0.00')), output_field=DEC)
+        + Coalesce(F('apolicescifptd__premioconjuge'), Value(Decimal('0.00')), output_field=DEC)
+        + Coalesce(F('apolicessifptd__premioconjuge'), Value(Decimal('0.00')), output_field=DEC)
     )
 
-def base_list_view(request, model, template_name, titulo, campos_visiveis, url_edicao, url_novo, search_fields=None, paginate_by=10, url_apagar = False):
-    """
-    View base para listar registros com busca e paginação.
-    """
-    query = request.GET.get('q')
-    registros = model.objects.all()
+    # 1) Anota total por apólice
+    # 2) Agrupa por tipo e soma o total
+    qs = (
+        ApoliceBase.objects
+        .filter(movimento='A')  # apenas apólices ativas
+        .annotate(total_apolice=ExpressionWrapper(total_expr, output_field=DEC))
+        .values('apolice__tipo')  # agrupa por tipo do catálogo
+        .annotate(total_tipo=Sum('total_apolice'))
+        .order_by('-total_tipo')  # opcional: ranking por tipo
+    )
+
+    # Map para exibir rótulo amigável
+    tipos_map = dict(ApolicesGerais.TIPOS)
+
+    # Constrói lista final já com rótulo e código
+    top10_apolices_por_premio = [
+        {
+            'tipo': tipos_map.get(row['apolice__tipo'], row['apolice__tipo']),
+            'total': row['total_tipo'],
+        }
+        for row in qs
+    ]
     
-
-    if query and search_fields:
-        q_objects = Q()
-        for field in search_fields:
-            q_objects |= Q(**{f"{field}__icontains": query})
-        registros = registros.filter(q_objects)
-
-    # Paginação
-    paginator = Paginator(registros, paginate_by)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    campos_busca = ", ".join([field.capitalize() for field in search_fields]) if search_fields else ""
-
     
-    reg = []
-    for registro in page_obj.object_list:
-        
-        reg.append({
-            'cliente':registro,
-            'cifptd':ApolicesCIFPTD.objects.filter(cliente = registro).exists(),
-            'sifptd':ApolicesSIFPTD.objects.filter(cliente = registro).exists(),
-            'mulher':ApolicesM.objects.filter(cliente = registro).exists(),
-            'educ':ApolicesE.objects.filter(cliente = registro).exists(),
-            'decesso':Decesso.objects.filter(cliente = registro).exists(), 
-            })
-      
-    context = {
-        'page_obj': page_obj,
-        'registros': reg,
-        'query': query,
-        'title': titulo,
-        'campos_visiveis': campos_visiveis,
-        'url_edicao': url_edicao,
-        'url_novo': url_novo,
-        'url_apagar': url_apagar,
-        'campos_busca': campos_busca
+    
+    
+    # ANIVERSARIANTES DO DIA (clientes com apólice ativa) =====
+    hoje = date.today()
+    aniversariantes = ApoliceBase.objects.filter(movimento='A', cliente__nascimento__month=hoje.month, cliente__nascimento__day=hoje.day)
+
+    #  Nº DE CLIENTES COM APÓLICES CANCELADAS OU SINISTRADAS =====
+    cancelados =  ApoliceBase.objects.filter(movimento='C')
+    sinistrados =  ApoliceBase.objects.filter(movimento='S')
+
+    contexto = {
+        "ativas_por_tipo": ativas_por_tipo,
+        "total_premio_geral": total_premio_geral,
+        "top10_apolices_por_premio": top10_apolices_por_premio,
+        "aniversariantes_hoje": aniversariantes,
+        "clientes_canceladas": len(cancelados),
+        "clientes_sinistradas": len(sinistrados),
     }
-    return render(request, template_name, context)
+    
+    #return render(request, "inicio.html", contexto)
+    return render(request, 'inicio.html', contexto)
