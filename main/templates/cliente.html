@@ -28,9 +28,12 @@
         <div class="d-grid gap-2">
           <a href="#" class="btn btn-light">Resumo</a>
           <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Alterar Cadastro</a>
-          <a class="btn btn-outline-light">Emitir Certificado</a>
-          <a class="btn btn-outline-light">Incluir Sinistro</a>
+          <a href="{% url 'agregados_list' cliente.pk %}" class="btn btn-outline-light">Agregados</a>
+          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Beneficiários</a>
           <a href="{% url 'escolhe_apolice' cliente.pk %}" class="btn btn-outline-light">Incluir Apólice</a>
+          <a class="btn btn-outline-light">Emitir Certificado</a>
+          <a href="{% url 'sinistros_create' cliente.pk %}" class="btn btn-outline-light">Incluir Sinistro</a>
+          
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Excluir Cliente</button>
           <a href="{% url 'clientes' %}" class="btn btn-outline-light my-5">Inicio</a>
         </div>
@@ -47,6 +50,16 @@
         
         
       </div>
+      <div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
       {%if apolices %}
       <div class="d-flex flex-column mt-3 px-3 border">
         <span class="fs-5">Resumo das Coberturas CEPE VIDA:</span>
@@ -122,7 +135,7 @@
             {% if info.tem %}
             {% for ap in info.apol %}
             <tr>
-              <td>{{tipo}} - <a href="/clientes/apolices/{{tipo}}/editar/{{ap.pk}}">{{ap.apolice.empresa}}</a></td>
+              <td>{{tipo}} - <a href="/clientes/apolices/{{tipo}}/editar/{{ap.pk}}">{{ap.apolice.nome}}</a></td>
               <td>R$ {{ap.premio|floatformat:2|default:"0,00"}}</td>
               <td>R$ {{ap.isbasica|floatformat:2|default:"0,00"}}</td>
               

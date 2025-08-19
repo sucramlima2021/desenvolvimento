@@ -4,6 +4,7 @@ from django.contrib import messages
 from ..models import Clientes
 from django import forms
 from ..formsDir.apolices_educacionais_Form import ApolicesEForm, ApolicesE
+from .clientesView import *
 
 def apolicesE_create(request, pk):
     instancia = get_object_or_404(Clientes, pk=pk)
@@ -13,7 +14,7 @@ def apolicesE_create(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro criado com sucesso!')
-            return redirect('clientes')
+            return redirect(seleciona_cliente, instancia.pk)
         else:
             print(form.errors)
     else:
@@ -30,11 +31,22 @@ def apolicesE_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro alterado com sucesso!')
-            return redirect('clientes')
+            return redirect(seleciona_cliente, instancia.cliente.pk)
     else:
         form = ApolicesEForm(instance=instancia)
         
         form.fields['apolice'].widget = forms.HiddenInput()
 
-    return render(request, 'form_educ.html', {'form': form, 'title': 'Alteração de Apólices EDUCACIONAL', 'cliente':instancia.cliente, 'apolice':instancia})
-    
+    return render(request, 'form_educ.html', {'form': form, 'title': 'Alteração de Apólices EDUCACIONAL', 'cliente':instancia.cliente, 'apolice':instancia, "editar":True})
+
+def apolicesE_delete(request, pk):
+    apolice = ApolicesE.objects.get(id = pk)
+    cliente = apolice.cliente.pk
+    if apolice:
+        try:
+            apolice.delete()
+        except:
+            messages.error(request, "Não foi possível apagar este apolice. Existem registros vinculados a ela.")
+            previous_url = request.META.get('HTTP_REFERER', '/')
+            return redirect(previous_url)
+    return redirect(seleciona_cliente, cliente)

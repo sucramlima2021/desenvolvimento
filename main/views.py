@@ -10,6 +10,10 @@ from .viewsDir.apolices_educacional_view import *
 from .viewsDir.apolices_decesso_view import *
 from .viewsDir.mainView import *
 from .viewsDir.sinistros_views import *
+from .viewsDir.apolices_vida_view import *
+from .viewsDir.apolices_residencia_view import *
+from .viewsDir.apolices_moto_view import *
+from .viewsDir.apolices_carro_view import *
 
 def main(request):
     return HttpResponse('Princ')

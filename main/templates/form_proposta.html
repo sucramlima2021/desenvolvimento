@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="d-flex">
+  <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100">
+      <div>
+        <h5 class="mb-4">Menu</h5>
+        <div class="d-grid gap-2">
+            
+          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
+          
+          <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
+          {%if editar%}
+          <a href="{% url 'apolicesCIFPTD_update' apolice.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
+          <a href="{% url 'apolicesCIFPTD_delete' apolice.pk %}" class="btn btn-outline-danger mb-5">Excluir Apólice</a>
+          {%endif%}
+          
+          <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
+        </div>
+      </div>
+
+    </div>
+  <div class="col-10">
+    <h4 class="text-center border-bottom my-2">Cadastrar / Alterar apólices CIFPTD</h4>
+  <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
+
+  <div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+  
+  <div class=" p-2">
+    <form method="post" id="meuForm">
+       {% csrf_token %}
+       <div class="container mt-4">
+  <h3 class="mb-4">Cadastro de Tabela de Cálculo (Comp)</h3>
+
+  <form method="post" class="row g-3">
+    {% csrf_token %}
+
+    <div class="col-md-2">
+      <label for="id_idade" class="form-label">Idade</label>
+      {{ form.idade|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-2">
+      <label for="id_sexo" class="form-label">Sexo/Categoria</label>
+      {{ form.sexo|add_class:"form-select" }}
+    </div>
+
+    <div class="col-md-2">
+      <label for="id_tx_edu" class="form-label">Tx. Educacional</label>
+      {{ form.tx_edu|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-2">
+      <label for="id_tx_mul" class="form-label">Tx. Mulher</label>
+      {{ form.tx_mul|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-2">
+      <label for="id_tx_c_ifptd" class="form-label">Tx. C IFPTD</label>
+      {{ form.tx_c_ifptd|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-2">
+      <label for="id_tx_s_ifptd" class="form-label">Tx. S IFPTD</label>
+      {{ form.tx_s_ifptd|add_class:"form-control" }}
+    </div>
+
+    <hr class="my-4">
+
+    <div class="col-md-3">
+      <label for="id_limite" class="form-label">Limite</label>
+      {{ form.limite|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-3">
+      <label for="id_vida" class="form-label">Capital Vida</label>
+      {{ form.vida|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-3">
+      <label for="id_edu" class="form-label">Capital Educacional</label>
+      {{ form.edu|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-3">
+      <label for="id_mul" class="form-label">Capital Mulher</label>
+      {{ form.mul|add_class:"form-control" }}
+    </div>
+
+    <div class="col-md-12 d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </form>
+</div>
+    </form>
+    {%if beneficiarios%}
+    <div class="mb-3">
+    <label class="form-label">Beneficiários Novos</label>
+    
+    <div class="d-flex flex-column">
+      <div class="d-flex">
+        <div class="col-5 border">Nome:</div>
+        <div class="col-3 border">Nascimento:</div>
+        <div class="col-2 border">Parentesco:</div>
+        <div class="col-2 border">Percentual:</div>
+  </div>
+  {%for benef in beneficiarios%}
+  <div class="d-flex">
+        <div class="col-5 border">{{benef.nome}}</div>
+        <div class="col-3 border">{{benef.nascimento}}</div>
+        <div class="col-2 border">{{benef.parentesco}}</div>
+        <div class="col-2 border">{{benef.percentual}}</div>
+           
+  </div>
+  {%endfor%}
+  </div>
+</div>
+{%endif%}
+  </div>
+  </div>
+  </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

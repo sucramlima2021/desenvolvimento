@@ -50,4 +50,4 @@ class ApoliceBase(models.Model):
 
     def __str__(self):
         # cuidado: acessar cliente.nome pode gerar N+1; use select_related('cliente') ao listar
-        return f"{self.apolice} — {self.cliente}"
+        return f"{self.apolice}"

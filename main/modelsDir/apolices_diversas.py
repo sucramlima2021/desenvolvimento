@@ -8,10 +8,10 @@ class ApolicesVida(ApoliceBase):
     apolicenumero = models.IntegerField(null=True, blank=True)
     plano = models.IntegerField(null=True, blank=True)
     proposta = models.IntegerField(null=True, blank=True) 
-    emissao = models.DateTimeField(null=True, blank=True)
-    referencia = models.DateTimeField(null=True, blank=True)
+    emissao = models.DateField(null=True, blank=True)
+    referencia = models.DateField(null=True, blank=True)
     isbasica = models.FloatField(null=True, blank=True)
-    dataCancelamento = models.DateTimeField(null=True, blank=True)
+    dataCancelamento = models.DateField(null=True, blank=True)
     
     def __str__(self):
         base = super().__str__()
@@ -23,8 +23,8 @@ class ApolicesResidencia(ApoliceBase):
     negocio = models.IntegerField(null=True, blank=True)
     item = models.IntegerField(null=True, blank=True) 
     classeBonus = models.IntegerField(null=True, blank=True) 
-    emissao = models.DateTimeField(null=True, blank=True)
-    versao = models.DateTimeField(null=True, blank=True)
+    emissao = models.DateField(null=True, blank=True)
+    versao = models.DateField(null=True, blank=True)
     tipoConstrucao = models.CharField(max_length=100, null=True, blank=True)
     tipoImovel = models.CharField(max_length=100, null=True, blank=True)
     ocupacao = models.CharField(max_length=100, null=True, blank=True)
@@ -37,7 +37,7 @@ class ApolicesResidencia(ApoliceBase):
     uf = models.CharField(max_length=10, null=True, blank=True)
     tipoindenizacao = models.CharField(max_length=255, null=True, blank=True)
     limite = models.FloatField(null=True, blank=True)
-    dataCancelamento = models.DateTimeField(null=True, blank=True)
+    dataCancelamento = models.DateField(null=True, blank=True)
     
     def __str__(self):
         base = super().__str__()
@@ -51,8 +51,8 @@ class ApolicesMoto(ApoliceBase):
     proposta = models.IntegerField(null=True, blank=True) 
     ci = models.IntegerField(null=True, blank=True) 
     classeBonus = models.IntegerField(null=True, blank=True) 
-    emissao = models.DateTimeField(null=True, blank=True)
-    versao = models.DateTimeField(null=True, blank=True)
+    emissao = models.DateField(null=True, blank=True)
+    versao = models.DateField(null=True, blank=True)
     condutor = models.CharField(max_length=255, null=True, blank=True)
     cpfCondutor = models.CharField(max_length=100, null=True, blank=True)
     estadoCivilCondutor = models.CharField(max_length=100, null=True, blank=True)
@@ -70,7 +70,7 @@ class ApolicesMoto(ApoliceBase):
     garagem = models.CharField(max_length=255, null=True, blank=True)
     
     limite = models.FloatField(null=True, blank=True)
-    dataCancelamento = models.DateTimeField(null=True, blank=True)
+    dataCancelamento = models.DateField(null=True, blank=True)
     
     def __str__(self):
         base = super().__str__()
@@ -83,8 +83,8 @@ class ApolicesCarro(ApoliceBase):
     proposta = models.IntegerField(null=True, blank=True) 
     ci = models.IntegerField(null=True, blank=True) 
     classeBonus = models.IntegerField(null=True, blank=True) 
-    emissao = models.DateTimeField(null=True, blank=True)
-    versao = models.DateTimeField(null=True, blank=True)
+    emissao = models.DateField(null=True, blank=True)
+    versao = models.DateField(null=True, blank=True)
     condutor = models.CharField(max_length=255, null=True, blank=True)
     cpfCondutor = models.CharField(max_length=100, null=True, blank=True)
     estadoCivilCondutor = models.CharField(max_length=100, null=True, blank=True)
@@ -102,7 +102,7 @@ class ApolicesCarro(ApoliceBase):
     garagem = models.CharField(max_length=255, null=True, blank=True)
     
     limite = models.FloatField(null=True, blank=True)
-    dataCancelamento = models.DateTimeField(null=True, blank=True)
+    dataCancelamento = models.DateField(null=True, blank=True)
     
     def __str__(self):
         base = super().__str__()

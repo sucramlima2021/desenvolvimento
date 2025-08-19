@@ -107,7 +107,12 @@ def show_cliente(request, pk):
 def clientes_delete(request, pk):
     cliente = Clientes.objects.get(id = pk)
     if cliente:
-        cliente.delete()
+        try:
+            cliente.delete()
+        except:
+            messages.error(request, "Não foi possível apagar este cliente. Existem registros vinculados a ele.")
+            previous_url = request.META.get('HTTP_REFERER', '/')
+            return redirect(previous_url)
     return redirect(clientes)
 
 def seleciona_cliente(request, pk):
@@ -122,7 +127,7 @@ def seleciona_cliente(request, pk):
     decesso = Decesso.objects.filter(cliente = cliente)
     vida = ApolicesVida.objects.filter(cliente = cliente)
     residencia = ApolicesResidencia.objects.filter(cliente = cliente)
-    #'carro':ApolicesDiversas.objects.filter(cliente = cliente, apolice__tipo = "carro"),
+    carro = ApolicesCarro.objects.filter(cliente = cliente)
     moto = ApolicesMoto.objects.filter(cliente = cliente)
     apolices = {
             'CIFPTD':{'tem':cifptd.exists(), 'apol':cifptd},
@@ -136,6 +141,7 @@ def seleciona_cliente(request, pk):
         'VIDA':{'tem':vida.exists(), 'apol':vida},
         'RESIDENCIA':{'tem':residencia.exists(), 'apol':residencia},
         'MOTO':{'tem':moto.exists(), 'apol':moto},
+        'CARRO':{'tem':carro.exists(), 'apol':carro},
     }
     
     premioTotal = sum(

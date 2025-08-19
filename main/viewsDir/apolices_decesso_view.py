@@ -4,6 +4,8 @@ from django.contrib import messages
 from ..models import Clientes
 from django import forms
 from ..formsDir.apolices_decesso_Form import DecessoForm, Decesso
+from ..viewsDir.clientesView import seleciona_cliente
+
 
 def decesso_create(request, pk):
     instancia = get_object_or_404(Clientes, pk=pk)
@@ -13,7 +15,7 @@ def decesso_create(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro criado com sucesso!')
-            return redirect('clientes')
+            return redirect(seleciona_cliente, instancia.pk)
         else:
             print(form.errors)
     else:
@@ -30,7 +32,7 @@ def decesso_update(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, 'Registro alterado com sucesso!')
-            return redirect('clientes')
+            return redirect(seleciona_cliente, instancia.cliente.pk)
         else:
             print(form.errors)
     else:
@@ -43,3 +45,10 @@ def decesso_update(request, pk):
 def decesso_impressao(request, pk):
     decesso = get_object_or_404(Decesso, pk=pk)
     return render(request, 'decesso_impressao.html', {'decesso': decesso})
+
+def decesso_delete(request, pk):
+    instancia = get_object_or_404(Decesso, pk=pk)
+    cliente = instancia.cliente.pk
+    if instancia:
+       instancia.delete()
+    return redirect(seleciona_cliente, cliente)

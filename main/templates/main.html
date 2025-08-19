@@ -32,6 +32,8 @@
             <a href="{% url 'dashboard' %}" class="btn btn-outline-light">Inicio</a>
             <a class="btn btn-light">Clientes</a>
             <a class="btn btn-outline-light">Propostas</a>
+            <a class="btn btn-outline-light">Certificados</a>
+            <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#uploadModal">Importar</button>
             <a class="btn btn-outline-light">Relatórios</a>
             <a href="{% url 'sinistros_list' %}" class="btn btn-outline-light">Sinistros</a>
             <a class="btn btn-outline-light">Configurações</a>
@@ -165,9 +167,33 @@
 
   </div>
 
+  <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success">
+        <h5 class="modal-title" id="uploadLabel">Upload PDF</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="{%url 'upload_pdf_vida'%}" enctype="multipart/form-data" class="mb-3">
+    {% csrf_token %}
+    <div class="mb-3">
+      <input type="file" name="arquivo_pdf" class="form-control" accept="application/pdf" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+  </form>
+      </div>
+      <div class="modal-footer">
+        <!-- Botão "Não" apenas fecha o modal -->
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

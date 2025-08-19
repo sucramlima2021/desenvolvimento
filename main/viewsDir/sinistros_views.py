@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from ..modelsDir.sinistros import Sinistros
 from ..formsDir.sinistros_form import SinistrosForm
+from ..modelsDir.clientes import *
 
 def sinistros_list(request):
     qs = Sinistros.objects.select_related("cliente", "apolice").all().order_by("-data", "-id")
@@ -35,15 +36,17 @@ def sinistros_list(request):
         "request": request,
     })
 
-def sinistros_create(request):
+def sinistros_create(request, pk):
+    cliente = get_object_or_404(Clientes, pk=pk)
     if request.method == "POST":
-        form = SinistrosForm(request.POST)
+        form = SinistrosForm(request.POST, cliente=cliente)
+        form.instance.cliente = cliente
         if form.is_valid():
             form.save()
             return redirect("sinistros_list")
     else:
-        form = SinistrosForm()
-    return render(request, "sinistros_form.html", {"form": form})
+        form = SinistrosForm(cliente=cliente)
+    return render(request, "form_sinistro.html", {"form": form, 'cliente':cliente})
 
 def sinistros_update(request, pk):
     obj = get_object_or_404(Sinistros, pk=pk)
@@ -54,7 +57,7 @@ def sinistros_update(request, pk):
             return redirect("sinistros_list")
     else:
         form = SinistrosForm(instance=obj)
-    return render(request, "sinistros_form.html", {"form": form, "object": obj})
+    return render(request, "form_sinistro.html", {"form": form, "object": obj, "editar":True})
 
 def sinistros_delete(request, pk):
     obj = get_object_or_404(Sinistros, pk=pk)

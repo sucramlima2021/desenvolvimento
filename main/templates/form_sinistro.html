@@ -8,18 +8,17 @@
 </head>
 <body>
   <div class="d-flex">
-  <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100">
+  <div class="col-2 bg-dark text-white d-flex flex-column p-2 vh-100">
       <div>
         <h5 class="mb-4">Menu</h5>
         <div class="d-grid gap-2">
-        {%if cliente.pk%}
-          <a href="{% url 'sinistros_list' %}" class="btn btn-outline-light mb-5">Resumo</a>
+        
+          <a  href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
           
           <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
           
-          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
-          {%else%}
-          <button type="submit" form="meuForm" class="btn btn-outline-light mb-5">Salvar</button>
+          {%if editar%}
+          <a href="{% url 'sinistros_update' object.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
           {%endif%}
           
           <a href="{% url 'dashboard' %}" class="btn btn-outline-light">Inicio</a>
@@ -32,185 +31,58 @@
   <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
   
   <div class=" p-2">
-    <form method="post" id="meuForm">
-        {% csrf_token %}
-        
-  <!-- Titular -->
-  <div class="card mb-3">
-    <div class="card-header bg-primary text-white">
-      Titular
-    </div>
-    <div class="card-body">
-      
-      <!-- Cliente -->
-    <div class="row mb-3">
-        <div class="d-flex">
-            <label class="form-label">Cliente: </label>
-            {{form.cliente}}
-        </div>
-    </div>
-      <!-- Datas -->
-      <div class="row mb-3 border-top">
-        <div class="col-md-3">
-          <label class="form-label">Produção</label>
-          {{form.producao}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Averbação</label>
-          {{form.averbacao}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Início</label>
-          {{form.inicio}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Data de vigência</label>
-          {{form.vigencia}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Canc. / sinistro</label>
-          {{form.datacancelamento}}
-        </div>
-        
-      </div>
-      
-
-      <!-- Valores -->
-      <div class="row border-top">
-        <div class="col-md-2">
-          <label class="form-label">Prêmio</label>
-          {{form.premio}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">Taxa</label>
-          {{form.taxa}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">IS Básica</label>
-          {{form.isbasica}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">IEA</label>
-          {{form.iea}}
-        </div>
-        
-        <div class="col-md-2">
-          <label class="form-label">IPA</label>
-          {{form.ipa}}
-        </div>
-      </div>
-
-    </div>
+    <form method="post" class="row g-3" id="meuForm">
+  {% csrf_token %}
+  
+  <div class="row mb-3">
+  <div class="col-md-8">
+    <label class="form-label">Apólice</label>
+    {{ form.apolice }}
+  </div>
   </div>
 
-  <!-- Cônjuge -->
-  <div class="card mb-3">
-    <div class="card-header bg-primary text-white">
-      Cônjuge
-    </div>
-    <div class="card-body">
-      
-      <!-- Situação -->
-      <div class="mb-3">
-        <label class="form-label me-3">Situação:</label>
-        {% for radio in form.movimentoconjuge %}
-        <div class="form-check form-check-inline">
-            {{ radio.tag }}
-            <label class="form-check-label">{{ radio.choice_label }}</label>
-        </div>
-    {% endfor %}
-      </div>
-
-      <div class="row mb-3 border-top">
-        <div class="col-md-3">
-          <label class="form-label">Produção</label>
-          {{form.producaoconjuge}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Averbação</label>
-          {{form.averbacaoconjuge}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Início</label>
-          {{form.inicioconjuge}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Data de vigência</label>
-          {{form.vigenciaconjuge}}
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Canc. / sinistro</label>
-          {{form.datacancelamentoconjuge}}
-        </div>
-        
-      </div>
-      
-
-      <!-- Valores -->
-      <div class="row border-top">
-        <div class="col-md-2">
-          <label class="form-label">Prêmio</label>
-          {{form.premioconjuge}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">Taxa</label>
-          {{form.taxaconjuge}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">IS Básica</label>
-          {{form.isbasicaconjuge}}
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">IEA</label>
-          {{form.ieaconjuge}}
-        </div>
-        
-        <div class="col-md-2">
-          <label class="form-label">IPA</label>
-          {{form.ipaconjuge}}
-        </div>
-      </div>
-
-    </div>
+  <div class="row mb-3">
+  <div class="col-md-2"><div class="form-check form-switch">
+    <label class="form-check-label" for="id_titular">Titular?</label>{{ form.titular }}
+  </div></div>
   </div>
 
-  <!-- Observações -->
-  <div class="mb-3">
-    <label class="form-label">Observações</label>
-    {{form.observacoes}}
+  <div class="row mb-3">
+  
+  <div class="col-md-2"><label class="form-label">Prêmio</label>{{ form.premio }}</div>
+  <div class="col-md-2"><label class="form-label">IS</label>{{ form.Is }}</div>
+  <div class="col-md-2"><label class="form-label">IEA (diag.)</label>{{ form.iea_diag }}</div>
+  <div class="col-md-2"><label class="form-label">IPA (aux.)</label>{{ form.ipa_aux }}</div>
+  <div class="col-md-2"><label class="form-label">IFPTD</label>{{ form.ifptd }}</div>
+  <div class="col-md-2"><label class="form-label">Valor</label>{{ form.valor }}</div>
+
+  </div>
+  <div class="row mb-3">
+  <div class="col-md-2"><label class="form-label">Data</label>{{ form.data }}</div>
+  <div class="col-md-2"><label class="form-label">Tipo</label>{{ form.tipo }}</div>
+  <div class="col-md-2"><label class="form-label">Tipo de morte</label>{{ form.tipo_morte }}</div>
+  <div class="col-md-2"><label class="form-label">Data óbito</label>{{ form.data_obito }}</div>
+  <div class="col-md-2"><label class="form-label">Comunic. VG</label>{{ form.data_com_vg }}</div>
+  <div class="col-md-2"><label class="form-label">Comunic. CIA</label>{{ form.data_com_cia }}</div>
+  </div>
+  
+  <div class="row mb-3">
+    <div class="col-12"><label class="form-label">Observações</label>{{ form.observacoes }}</div>
+
   </div>
 
-  <!-- Beneficiários -->
-  <div class="mb-3">
-    <label class="form-label">Beneficiários</label>
-    {{form.beneficiarios}}
+  <div class="row mb-3">
+  <div class="col-md-2"><div class="form-check form-switch">
+    <label class="form-check-label" for="id_titular">Pago?</label>{{ form.pago_recusa }}
+  </div></div>
+  <div class="col-md-2"><label class="form-label">Data recusa/pagto</label>{{ form.data_recusa_pg }}</div>
   </div>
 
-  <!-- Botões -->
-    </form>
-    {%if beneficiarios%}
-    <div class="mb-3">
-    <label class="form-label">Beneficiários Novos</label>
-    
-    <div class="d-flex flex-column">
-      <div class="d-flex">
-        <div class="col-5 border">Nome:</div>
-        <div class="col-3 border">Nascimento:</div>
-        <div class="col-2 border">Parentesco:</div>
-        <div class="col-2 border">Percentual:</div>
-  </div>
-  {%for benef in beneficiarios%}
-  <div class="d-flex">
-        <div class="col-5 border">{{benef.nome}}</div>
-        <div class="col-3 border">{{benef.nascimento}}</div>
-        <div class="col-2 border">{{benef.parentesco}}</div>
-        <div class="col-2 border">{{benef.percentual}}</div>
-           
-  </div>
-  {%endfor%}
-  </div>
-</div>
-{%endif%}
+  
+  
+
+  
+</form>
   </div>
 </div>
   </div>

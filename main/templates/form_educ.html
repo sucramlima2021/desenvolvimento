@@ -12,16 +12,13 @@
       <div>
         <h5 class="mb-4">Menu</h5>
         <div class="d-grid gap-2">
-        {%if cliente.pk%}
           <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
           
           <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
-          
-          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
-          {%else%}
-          <button type="submit" form="meuForm" class="btn btn-outline-light mb-5">Salvar</button>
+          {%if editar%}
+          <a href="{% url 'apolicesE_update' apolice.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
+          <a href="{% url 'apolicesE_delete' apolice.pk %}" class="btn btn-outline-danger mb-5">Excluir Apólice</a>
           {%endif%}
-          
           <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
         </div>
       </div>
@@ -30,6 +27,17 @@
   <div class="col-10">
     <h4 class="text-center border-bottom my-2">Cadastrar / Alterar apólices EDUCACIONAL</h4>
   <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
+
+  <div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
   
   <div class=" p-2">
     <form method="post" id="meuForm">
