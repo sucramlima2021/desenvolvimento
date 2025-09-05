@@ -1,0 +1,123 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="d-flex">
+  <div class="col-2 bg-dark text-white d-flex flex-column p-2 vh-100">
+      <div>
+        <h5 class="mb-4">Menu</h5>
+        <div class="d-grid gap-2">
+          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
+          
+          <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
+          
+          {%if editar%}
+          <a href="{% url 'beneficiarios_update' agregado.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Excluir Beneficiario</button> 
+          {%endif%}
+          <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
+        </div>
+      </div>
+
+    </div>
+  <div class="col-10">
+    <h4 class="text-center border-bottom my-2">Cadastrar / Alterar Beneficiários</h4>
+  <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
+
+  <div class="container mt-3">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+  
+  <div class=" p-2">
+    <form method="post" id="meuForm">
+        {% csrf_token %}
+        
+  <!-- Titular -->
+  <div class="card mb-3">
+    <div class="card-header bg-primary text-white">
+      Beneficiário
+    </div>
+    <div class="card-body">
+  
+            <div class="row mb-3">
+        <div class="col-md-9">
+          <label class="form-label">Apólice</label>
+          {{form.apolice}}
+        </div>
+        
+        
+      </div>
+      
+      <div class="row mb-3">
+        <div class="col-md-9">
+          <label class="form-label">Nome</label>
+          {{form.nome}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">CPF</label>
+          {{form.cpf}}
+        </div>
+        
+      </div>
+
+      <div class="row mb-3 border-top">
+        
+        <div class="col-md-3">
+          <label class="form-label">Nascimento</label>
+          {{form.nascimento}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Parentesco</label>
+          {{form.parentesco}}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Percentual</label>
+          {{form.percentual}}
+        </div>
+        
+      </div>
+         
+  
+
+  <!-- Botões -->
+    </form>
+  </div>
+</div>
+  </div>
+
+  {%if editar%}
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title" id="confirmDeleteLabel">Confirmação de Exclusão</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <div class="modal-body">
+        Realmente deseja excluir este agregado?
+      </div>
+      <div class="modal-footer">
+        <!-- Botão "Não" apenas fecha o modal -->
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+        <!-- Botão "Sim" redireciona -->
+        <a href="{% url 'beneficiarios_delete' beneficiario.pk %}" class="btn btn-danger">Sim</a>
+      </div>
+    </div>
+  </div>
+</div>
+{%endif%}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

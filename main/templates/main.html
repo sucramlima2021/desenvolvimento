@@ -34,9 +34,9 @@
             <a class="btn btn-outline-light">Propostas</a>
             <a class="btn btn-outline-light">Certificados</a>
             <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#uploadModal">Importar</button>
-            <a class="btn btn-outline-light">Relatórios</a>
+            
             <a href="{% url 'sinistros_list' %}" class="btn btn-outline-light">Sinistros</a>
-            <a class="btn btn-outline-light">Configurações</a>
+            
           </div>
         </div>
         <div>
@@ -49,7 +49,7 @@
         <div class="container">
           <div class="d-flex justify-content-between mb-3 align-items-center">
           <h2>{{title}}</h2>
-          <a href="{% url url_novo %}" class="btn btn-success">Cadastrar Cliente</a>
+          <a href="{% url url_novo %}" class="btn btn-success">Cadastrar Clientes</a>
           </div>
 
           <form method="get" class="mb-3">

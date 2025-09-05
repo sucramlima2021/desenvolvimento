@@ -38,9 +38,9 @@ urlpatterns = [
     path('clientes/agregados/editar/<int:pk>/', agregados_update, name='agregados_update'),
     path('clientes/agregados/apagar/<int:pk>/', agregados_delete, name='agregados_delete'),
     
-    path('beneficiarios', beneficiarios_list, name='beneficiarios_list'),
-    path('beneficiarios/cadastrar', beneficiarios_create, name='beneficiarios_create'),
-    path('beneficiarios/editar/<int:pk>/', beneficiarios_update, name='beneficiarios_update'),
+    # path('beneficiarios', beneficiarios_list, name='beneficiarios_list'),
+    # path('beneficiarios/cadastrar', beneficiarios_create, name='beneficiarios_create'),
+    # path('beneficiarios/editar/<int:pk>/', beneficiarios_update, name='beneficiarios_update'),
     
     path('apolicesGerais', apolicesGerais_list, name='apolicesGerais_list'),
     path('apolicesGerais/cadastrar', apolicesGerais_create, name='apolicesGerais_create'),
@@ -69,4 +69,10 @@ urlpatterns = [
     path('clientes/apolices/CARRO/editar/<int:pk>/', apolicesCarro_update, name='apolicesCarro_update'),
     path('clientes/apolices/CARRO/apagar/<int:pk>/', apolicesCarro_delete, name='apolicesCarro_delete'),
     
+    path('config/', configuracoes, name='configuracoes'),
+
+    path('clientes/<int:pk>/beneficiarios', beneficiarios_list, name='beneficiarios_list'),
+    path('clientes/<int:pk>/beneficiarios/cadastrar', beneficiarios_create, name='beneficiarios_create'),
+    path('clientes/beneficiarios/editar/<int:pk>/', beneficiarios_update, name='beneficiarios_update'),
+    path('clientes/beneficiarios/apagar/<int:pk>/', beneficiarios_delete, name='beneficiarios_delete'),
 ]
