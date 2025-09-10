@@ -26,13 +26,14 @@
       <div>
         <h5 class="mb-4">Menu</h5>
         <div class="d-grid gap-2">
+          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Cadastro</a>
           <a href="#" class="btn btn-light">Resumo</a>
-          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Alterar Cadastro</a>
           <a href="{% url 'agregados_list' cliente.pk %}" class="btn btn-outline-light">Agregados</a>
           <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Beneficiários</a>
           <a href="{% url 'escolhe_apolice' cliente.pk %}" class="btn btn-outline-light">Incluir Apólice</a>
           <a class="btn btn-outline-light">Emitir Certificado</a>
           <a href="{% url 'sinistros_create' cliente.pk %}" class="btn btn-outline-light">Incluir Sinistro</a>
+          <a href="{% url 'cliente_history' cliente.pk %}" class="btn btn-outline-light">Histórico</a>
           
           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Excluir Cliente</button>
           <a href="{% url 'clientes' %}" class="btn btn-outline-light my-5">Inicio</a>

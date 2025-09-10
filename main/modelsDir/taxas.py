@@ -1,5 +1,7 @@
 from django.db import models
 from .apolices_geral import *
+from simple_history.models import HistoricalRecords
+
 class Taxas(models.Model):
     apolice = models.ForeignKey(ApolicesGerais, on_delete=models.CASCADE)
     data = models.DateField(null=True, blank=True)
@@ -64,6 +66,6 @@ class Taxas(models.Model):
     terceirovalor13 = models.FloatField(null=True, blank=True)
     terceirovalor14 = models.FloatField(null=True, blank=True)
     terceirovalor15 = models.FloatField(null=True, blank=True)
-
+    history = HistoricalRecords()
     def __str__(self):
         return str(f"Taxa para a idade {self.idade} da apólice {self.apolice}")

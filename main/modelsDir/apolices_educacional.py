@@ -3,6 +3,7 @@ from .clientes import *
 from .apolices_geral import *
 from .beneficiarios import *
 from .angariadores import *
+from simple_history.models import HistoricalRecords
 
 class ApolicesE(ApoliceBase):
     matricula = models.IntegerField(null=True, blank=True)
@@ -22,7 +23,7 @@ class ApolicesE(ApoliceBase):
     subconv = models.IntegerField(null=True, blank=True)
     tipo = models.CharField(max_length=10, null=True, blank=True)
     #beneficiariosNovos = models.ManyToManyField(BeneficiariosNovos, through="EducacionalBeneficiario", related_name="ApolicesE", blank=True)
-    
+    history = HistoricalRecords()
     def __str__(self):
         base = super().__str__()
         return base

@@ -15,8 +15,8 @@ class SinistrosForm(forms.ModelForm):
             "premio", "Is", "iea_diag", "ipa_aux", "ifptd", "valor",
             "data", "tipo", "observacoes",
             "tipo_morte", "data_obito", "data_com_vg", "data_com_cia",
-            "pago_recusa", "data_recusa_pg",
-            "nome_segurado", "cpf_segurado",
+            "data_recusa_pg",
+            "nome_segurado", "cpf_segurado", "status"
         ]
         widgets = {
             "data": DateInput(),
@@ -25,8 +25,7 @@ class SinistrosForm(forms.ModelForm):
             "data_com_cia": DateInput(),
             "data_recusa_pg": DateInput(),
             "observacoes": forms.Textarea(attrs={"rows": 3}),
-            'titular': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'pago_recusa': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            
         
             
         }

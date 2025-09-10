@@ -2,6 +2,7 @@ from django.db import models
 from .clientes import *
 from .angariadores import Angariadores
 from .apolices_geral import *
+from simple_history.models import HistoricalRecords
 
 class Decesso(ApoliceBase):
     taxa = models.FloatField( null=True, blank=True)
@@ -14,6 +15,7 @@ class Decesso(ApoliceBase):
     anuencia = models.BooleanField(default=False)  
     subconv = models.IntegerField( null=True, blank=True)  
     codunid = models.IntegerField( null=True, blank=True)  
+    history = HistoricalRecords()
 
     def __str__(self):
         base = super().__str__()

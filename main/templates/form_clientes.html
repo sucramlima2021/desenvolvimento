@@ -11,22 +11,24 @@
 <body>
     <div class="d-flex">
         <div class="col-2 bg-dark text-white d-flex flex-column p-2 mh-100">
-      <div>
+            <div>
         <h5 class="mb-4">Menu</h5>
         <div class="d-grid gap-2">
-            {%if cliente.pk%}
-          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light mb-5">Resumo</a>
+          <a href="#" class="btn btn-light">Cadastro</a>
+          <a href="{% url 'seleciona_cliente' cliente.pk %}" class="btn btn-outline-light">Resumo</a>
+          <a href="{% url 'agregados_list' cliente.pk %}" class="btn btn-outline-light">Agregados</a>
+          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light">Beneficiários</a>
+          <a href="{% url 'escolhe_apolice' cliente.pk %}" class="btn btn-outline-light">Incluir Apólice</a>
+          <a class="btn btn-outline-light">Emitir Certificado</a>
+          <a href="{% url 'sinistros_create' cliente.pk %}" class="btn btn-outline-light">Incluir Sinistro</a>
           
-          <button type="submit" form="meuForm" class="btn btn-outline-light">Salvar</button>
-          
-          <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-outline-light mb-5">Desfazer</a>
-          {%else%}
-          <button type="submit" form="meuForm" class="btn btn-outline-light mb-5">Salvar</button>
-          {%endif%}
-          
-          <a href="{% url 'clientes' %}" class="btn btn-outline-light">Inicio</a>
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Excluir Cliente</button>
+          <a href="{% url 'clientes' %}" class="btn btn-outline-light my-5">Clientes</a>
         </div>
       </div>
+
+
+      
 
     </div>
         <div class="col-10 bg-light">
@@ -231,6 +233,11 @@
 
             
         </form>
+        <div class="d-flex my-2 ">
+        <a href="{% url 'clientes_update' cliente.pk %}" class="btn btn-primary mx-2 ">Desfazer Alterações</a>
+          
+        <button type="submit" form="meuForm" class="btn btn-primary mx-2">Salvar Alterações</button>
+        </div>
         </div>
     </div>
 

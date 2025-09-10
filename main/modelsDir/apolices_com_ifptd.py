@@ -2,6 +2,7 @@ from django.db import models
 from .clientes import *
 from .apolices_geral import *
 from .angariadores import Angariadores
+from simple_history.models import HistoricalRecords
 
 
 
@@ -44,6 +45,7 @@ class ApolicesCIFPTD(ApoliceBase):
     codunid = models.IntegerField(null=True, blank=True)
     segurotipoconj = models.CharField(max_length=10, null=True, blank=True)
     #beneficiariosNovos = models.ManyToManyField(BeneficiariosNovos, through="CifptdBeneficiario", blank=True)
+    history = HistoricalRecords()
     
     def __str__(self):
         base = super().__str__()

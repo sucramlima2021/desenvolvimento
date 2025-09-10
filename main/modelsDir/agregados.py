@@ -1,5 +1,7 @@
 from django.db import models
 from .clientes import *
+from simple_history.models import HistoricalRecords
+
 class Agregados(models.Model):
     cliente = models.ForeignKey(Clientes, on_delete=models.CASCADE)
     nome = models.CharField(max_length=50, null=True, blank=True)
@@ -14,6 +16,7 @@ class Agregados(models.Model):
     observacoes = models.TextField(null=True, blank=True)
     vigencia = models.DateTimeField(null=True, blank=True)
     subconv = models.CharField(max_length=50, null=True, blank=True)
+    history = HistoricalRecords()
 
     def __str__(self):
         return str(f'{self.cliente} - {self.nome} - {self.parentesco}')

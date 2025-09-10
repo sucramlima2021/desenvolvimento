@@ -3,6 +3,7 @@ from .clientes import *
 from .apolices_geral import *
 from .beneficiarios import *
 from .angariadores import *
+from simple_history.models import HistoricalRecords
 
 class ApolicesM(ApoliceBase):
     isbasica = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
@@ -26,7 +27,7 @@ class ApolicesM(ApoliceBase):
     beneficiario1 = models.TextField(null=True, blank=True)
     beneficiario2 = models.TextField(null=True, blank=True)
     beneficiario3 = models.TextField(null=True, blank=True)
-    
+    history = HistoricalRecords()
     #beneficiariosNovos = models.ManyToManyField(BeneficiariosNovos, through="MulherBeneficiario", related_name="ApolicesM", blank=True)
     
     def __str__(self):

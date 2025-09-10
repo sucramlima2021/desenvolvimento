@@ -1,5 +1,6 @@
 from django.db import models
 from .angariadores import *
+from simple_history.models import HistoricalRecords
 
 class Clientes(models.Model):
     cpf = models.CharField(max_length=50, unique=True, verbose_name='CPF')
@@ -57,6 +58,8 @@ class Clientes(models.Model):
     control_antigo = models.CharField(max_length=50, blank=True, null=True)
     codclube_antigo = models.CharField(max_length=50, blank=True, null=True)
     Anuencia_Antiga = models.CharField(max_length=50, blank=True, null=True)
+    
+    history = HistoricalRecords()
     
     def __str__(self):
         return f"{self.nome}"

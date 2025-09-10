@@ -6,6 +6,7 @@ from .apolices_sem_ifptd import *
 from .apolices_mulher import *
 from .apolices_educacional import *
 from .apolices_geral import *
+from simple_history.models import HistoricalRecords
 
 class BeneficiariosNovos(models.Model):
     cliente = models.ForeignKey(Clientes, on_delete=models.PROTECT)
@@ -16,7 +17,7 @@ class BeneficiariosNovos(models.Model):
     parentesco = models.CharField(max_length=30, null=True, blank=True)
     percentual = models.FloatField(null=True, blank=True)
     controle = models.CharField(max_length=10, null=True, blank=True)
-
+    history = HistoricalRecords()
     def __str__(self):
         return str(f'{self.apolice} - {self.cliente} - {self.nome}')
 

@@ -1,6 +1,6 @@
 from django.db import models
 from ..models import Clientes
-
+from simple_history.models import HistoricalRecords
 
 class ApolicesGerais(models.Model):
     TIPOS = [
@@ -16,8 +16,9 @@ class ApolicesGerais(models.Model):
     ]
     nome = models.CharField(max_length=255)
     tipo = models.CharField(max_length=50, choices=TIPOS, default='cifptd', db_index=True)
+    seguradora = models.CharField(max_length=255, blank=True, null=True)
     observacoes = models.TextField(blank=True, null=True)
-    
+    history = HistoricalRecords()
     class Meta:
         verbose_name = "Apólice (catálogo)"
         verbose_name_plural = "Apólices (catálogo)"
@@ -43,7 +44,7 @@ class ApoliceBase(models.Model):
     vigencia = models.DateField(null=True, blank=True)
     premio = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     segurotipo = models.CharField(max_length=50, null=True, blank=True)
-    
+    history = HistoricalRecords()
     class Meta:
         verbose_name = "Apólice"
         verbose_name_plural = "Apólices"

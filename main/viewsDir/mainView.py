@@ -83,3 +83,6 @@ def dashboard(request):
     
     #return render(request, "inicio.html", contexto)
     return render(request, 'inicio.html', contexto)
+
+def configuracoes(request):
+    return render(request, 'config.html')

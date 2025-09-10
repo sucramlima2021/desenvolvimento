@@ -1,6 +1,7 @@
 from django.db import models
 from .clientes import *
 from .apolices_geral import *
+from simple_history.models import HistoricalRecords
 
 
 class ApolicesVida(ApoliceBase):
@@ -12,6 +13,7 @@ class ApolicesVida(ApoliceBase):
     referencia = models.DateField(null=True, blank=True)
     isbasica = models.FloatField(null=True, blank=True)
     dataCancelamento = models.DateField(null=True, blank=True)
+    history = HistoricalRecords()
     
     def __str__(self):
         base = super().__str__()
@@ -38,7 +40,7 @@ class ApolicesResidencia(ApoliceBase):
     tipoindenizacao = models.CharField(max_length=255, null=True, blank=True)
     limite = models.FloatField(null=True, blank=True)
     dataCancelamento = models.DateField(null=True, blank=True)
-    
+    history = HistoricalRecords()
     def __str__(self):
         base = super().__str__()
         return base
@@ -71,7 +73,7 @@ class ApolicesMoto(ApoliceBase):
     
     limite = models.FloatField(null=True, blank=True)
     dataCancelamento = models.DateField(null=True, blank=True)
-    
+    history = HistoricalRecords()
     def __str__(self):
         base = super().__str__()
         return base
@@ -103,7 +105,7 @@ class ApolicesCarro(ApoliceBase):
     
     limite = models.FloatField(null=True, blank=True)
     dataCancelamento = models.DateField(null=True, blank=True)
-    
+    history = HistoricalRecords()
     def __str__(self):
         base = super().__str__()
         return base

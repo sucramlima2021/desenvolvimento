@@ -5,6 +5,9 @@ from django.db.models import Q
 from ..modelsDir.sinistros import Sinistros
 from ..formsDir.sinistros_form import SinistrosForm
 from ..modelsDir.clientes import *
+from django.http import JsonResponse
+from ..models import *
+
 
 def sinistros_list(request):
     qs = Sinistros.objects.select_related("cliente", "apolice").all().order_by("-data", "-id")
@@ -65,3 +68,28 @@ def sinistros_delete(request, pk):
         obj.delete()
         return redirect("sinistros_list")
     return render(request, "sinistros_confirm_delete.html", {"object": obj})
+
+
+
+def get_apolice_data(request, apolice_id):
+   
+    apoliceBase = get_object_or_404(ApoliceBase, pk=apolice_id)
+    apolice = get_apolice_especifica(apoliceBase)
+    
+    data = {
+        "premio": str(apolice.premio) if apolice.premio else "",
+        "is": str(apolice.isbasica) if hasattr(apolice, "isbasica") else "",
+        "iea": str(apolice.iea) if hasattr(apolice, "iea") else "",
+        "ipa": str(apolice.ipa) if hasattr(apolice, "ipa") else "",
+        "ifptd": str(apolice.ifptd) if hasattr(apolice, "ifptd") else "",
+    }
+    
+    return JsonResponse(data)
+
+def get_apolice_especifica(apolice_base):
+    for child in ["apolicescifptd", "apolicessifptd", "apolicesm", "apolicese", "decesso",
+                  "apolicesvida", "apolicesresidencia", "apolicesmoto", "apolicescarro"]:
+        if hasattr(apolice_base, child):
+            return getattr(apolice_base, child)
+    return apolice_base  # fallback para a base
+

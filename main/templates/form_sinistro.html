@@ -27,65 +27,138 @@
 
     </div>
   <div class="col-10">
-    <h4 class="text-center border-bottom my-2">Cadastrar / Alterar Sinistros</h4>
+    <h4 class="text-center border-bottom my-2">Controle de Sinistros</h4>
   <h5 class="mx-2">Cliente: {{cliente.nome}}</h5>
+  <h5 class="mx-2">CPF: {{cliente.cpf}}</h5>
   
   <div class=" p-2">
-    <form method="post" class="row g-3" id="meuForm">
+    <form method="post" id="meuForm">
   {% csrf_token %}
   
   <div class="row mb-3">
-  <div class="col-md-8">
+  <div class="col-md-6">
     <label class="form-label">Apólice</label>
     {{ form.apolice }}
   </div>
+  
   </div>
 
-  <div class="row mb-3">
-  <div class="col-md-2"><div class="form-check form-switch">
-    <label class="form-check-label" for="id_titular">Titular?</label>{{ form.titular }}
-  </div></div>
+  <div class="d-flex border-top column-gap-3 mb-3 pt-2">
+    <div class="col-md-2">
+    <label class="form-label">Segurado</label>{{ form.titular }}
   </div>
+  <div class="col-md-6">
+    <label class="form-label">Nome do Segurado</label>
+    {{ form.nome_segurado }}
+  </div>
+  <div class="col-md-2">
+    <label class="form-label">CPF do Segurado</label>{{ form.cpf_segurado }}
+  </div>
+  </div>
+  
 
-  <div class="row mb-3">
+  <div class="d-flex column-gap-3 border-top pt-2 mb-3">
   
   <div class="col-md-2"><label class="form-label">Prêmio</label>{{ form.premio }}</div>
   <div class="col-md-2"><label class="form-label">IS</label>{{ form.Is }}</div>
   <div class="col-md-2"><label class="form-label">IEA (diag.)</label>{{ form.iea_diag }}</div>
   <div class="col-md-2"><label class="form-label">IPA (aux.)</label>{{ form.ipa_aux }}</div>
   <div class="col-md-2"><label class="form-label">IFPTD</label>{{ form.ifptd }}</div>
-  <div class="col-md-2"><label class="form-label">Valor</label>{{ form.valor }}</div>
-
-  </div>
-  <div class="row mb-3">
-  <div class="col-md-2"><label class="form-label">Data</label>{{ form.data }}</div>
-  <div class="col-md-2"><label class="form-label">Tipo</label>{{ form.tipo }}</div>
-  <div class="col-md-2"><label class="form-label">Tipo de morte</label>{{ form.tipo_morte }}</div>
-  <div class="col-md-2"><label class="form-label">Data óbito</label>{{ form.data_obito }}</div>
-  <div class="col-md-2"><label class="form-label">Comunic. VG</label>{{ form.data_com_vg }}</div>
-  <div class="col-md-2"><label class="form-label">Comunic. CIA</label>{{ form.data_com_cia }}</div>
   </div>
   
-  <div class="row mb-3">
+  <div class="d-flex border-top pt-2 mb-3 column-gap-3 align-items-center">
+  <div class="col-md-2 border p-2"><label class="form-label fw-bold">Status</label>{{ form.status }}</div>
+  
+  <div class="col-md-2"><label class="form-label">Sinistro</label>{{ form.data_obito }}</div>
+  <div class="col-md-2"><label class="form-label">Comunic. VG</label>{{ form.data_com_vg }}</div>
+  <div class="col-md-2"><label class="form-label">Comunic. CIA</label>{{ form.data_com_cia }}</div>
+  <div class="col-md-2"><label class="form-label">Pg/Recusa</label>{{ form.data }}</div>
+
+  </div>
+  <div class="d-flex column-gap-3 border-top pt-2 mb-3">
+  <div class="col-md-2"><label class="form-label">Valor Pago</label>{{ form.valor }}</div>
+  <div class="col-md-2"><label class="form-label">Tipo de cobertura</label>{{ form.tipo }}</div>
+  <div class="col-md-7"><label class="form-label">Tipo de Sinistro</label>{{ form.tipo_morte }}</div>
+  
+  </div>
+  
+  <div class="d-flex mb-3 border-top">
     <div class="col-12"><label class="form-label">Observações</label>{{ form.observacoes }}</div>
 
   </div>
-
-  <div class="row mb-3">
-  <div class="col-md-2"><div class="form-check form-switch">
-    <label class="form-check-label" for="id_titular">Pago?</label>{{ form.pago_recusa }}
-  </div></div>
-  <div class="col-md-2"><label class="form-label">Data recusa/pagto</label>{{ form.data_recusa_pg }}</div>
-  </div>
-
-  
-  
-
-  
 </form>
+<div class="d-flex border-top">
+  <h5>Histórico:</h5>
+</div>
   </div>
 </div>
   </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+<script>
+  const apoliceimput = document.getElementById("id_apolice");
+  const sinistrado = document.getElementById("id_titular");
+  const nome = document.getElementById("id_nome_segurado");
+  const cpf = document.getElementById("id_cpf_segurado");
+  const premio = document.getElementById("id_premio");
+  const isBasica = document.getElementById("id_Is");
+  const iea = document.getElementById("id_iea_diag");
+  const ipa = document.getElementById("id_ipa_aux");
+  const ifptd = document.getElementById("id_ifptd");
+  
+  apoliceimput.addEventListener("change", function() {
+    let valor = this.value;
+    if (valor) {
+      buscarApolice(apoliceimput.value);
+    }});
+  
+  sinistrado.addEventListener("change", function() {
+    let valor = this.value;
+    if (valor == "T") {
+      nome.value = "{{cliente.nome}}";
+      cpf.value = "{{cliente.cpf}}";
+    }
+    else if (valor == "C" && "{{cliente.conjuge}}" != "None"){
+      nome.value = "{{cliente.conjuge}}"; 
+      cpf.value = "{{cliente.cpfconjuge}}";
+    }
+
+    else{
+      nome.value = ""; 
+      cpf.value = "";
+    }
+    
+  });
+function buscarApolice(apoliceId) {
+  if (!apoliceId) {
+    alert("Selecione uma apólice primeiro!");
+    return;
+  }
+  
+  fetch(`/apolice/${apoliceId}/dados/`)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error("Erro ao buscar apólice");
+      }
+      return response.json();
+    })
+    .then(data => {
+     
+      premio.value = data.premio;
+      isBasica.value = data.is;
+      iea.value = data.iea;
+      ipa.value = data.ipa;
+      ifptd.value = data.ifptd;
+   })
+    .catch(error => {
+      console.error(error);
+      alert("Não foi possível carregar os dados da apólice.");
+    }); 
+}
+</script>
+
+     
+
 </body>
 </html>

@@ -6,13 +6,14 @@ from django.contrib import messages
 from ..models import *
 from ..formsDir.clientesForm import ClientesForm, Clientes
 from .base_views import base_create_view, base_update_view
+from .utils import get_diff 
 
 def clientes(request):
     
     template_name='main.html'
     titulo = "Listagem de Clientes"
     campos_visiveis=['nome', 'cpf', 'matricula']
-    url_edicao = 'seleciona_cliente'
+    url_edicao = 'clientes_update'
     url_novo = 'clientes_create'
     url_apagar = 'clientes_delete'
     search_fields=['nome', 'cpf']
@@ -83,7 +84,7 @@ def clientes_update(request, pk):
         form_class=ClientesForm,
         success_url='clientes',
         template_name='form_clientes.html',
-        titulo = 'Edição do registro de Clientes',
+        titulo = 'Dados do Cliente',
         success_message='Registro atualizado com sucesso!'
     )
     
@@ -195,3 +196,47 @@ def escolhe_apolice(request, pk):
     mulher = ApolicesGerais.objects.filter(tipo = 'mulher')
     educacional = ApolicesGerais.objects.filter(tipo = 'educacional')
     return render(request, 'escolhe_apolice.html',{'cliente':cliente, 'cifptd':cifptd, 'sifptd':sifptd, 'mulher':mulher, 'educacional':educacional })
+
+
+def cliente_history(request, pk):
+    cliente = get_object_or_404(Clientes, pk=pk)
+    
+    HISTORY_TYPE_LABELS = {
+    "+": "Criado",
+    "~": "Alterado",
+    "-": "Excluído",
+}
+
+    historicos = {
+        "Agregados": Agregados.history.filter(cliente=cliente).order_by("-history_date"),
+        "VIDA1": ApolicesCIFPTD.history.filter(cliente=cliente).order_by("-history_date"),
+        "VIDA2": ApolicesSIFPTD.history.filter(cliente=cliente).order_by("-history_date"),
+        "Mulher": ApolicesM.history.filter(cliente=cliente).order_by("-history_date"),
+        "Educacional": ApolicesE.history.filter(cliente=cliente).order_by("-history_date"),
+        "Decesso": Decesso.history.filter(cliente=cliente).order_by("-history_date"),
+        "Vida": ApolicesVida.history.filter(cliente=cliente).order_by("-history_date"),
+        "Residência": ApolicesResidencia.history.filter(cliente=cliente).order_by("-history_date"),
+        "Moto": ApolicesMoto.history.filter(cliente=cliente).order_by("-history_date"),
+        "Carro": ApolicesCarro.history.filter(cliente=cliente).order_by("-history_date"),
+        "Beneficiários": BeneficiariosNovos.history.filter(cliente=cliente).order_by("-history_date"),
+        "Cadastro": cliente.history.all().order_by("-history_date")
+    }
+
+    # transforma cada registro em um dict com diff calculado
+    historicos_com_diff = {}
+    for nome, registros in historicos.items():
+        if registros:
+            historicos_com_diff[nome] = [
+                {
+                    "data": r.history_date,
+                    "usuario": r.history_user,
+                    "acao": HISTORY_TYPE_LABELS.get(r.history_type, r.history_type),
+                    "diff": get_diff(r),
+                }
+                for r in registros
+            ]
+
+    return render(request, "cliente_historico.html", {
+        "cliente": cliente,
+        "historicos": historicos_com_diff
+    })

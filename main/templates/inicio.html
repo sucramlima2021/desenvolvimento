@@ -21,7 +21,7 @@
 </head>
 <body>
 <div class="d-flex">
-    <div class="col-2 bg-dark text-white d-flex flex-column justify-content-between p-3">
+    <div class="col-2 bg-dark text-white d-flex flex-column justify-content-between p-3 vh-100">
         <div>
           <h5 class="mb-4">Menu</h5>
           <div class="d-grid gap-2">
@@ -30,12 +30,12 @@
             
             <a class="btn btn-outline-light">Relatórios</a>
             
-            <a class="btn btn-outline-light">Sinistros</a>
-            <a class="btn btn-outline-light">Configurações</a>
+            
+            <a href="{%url 'configuracoes'%}" class="btn btn-outline-light">Configurações</a>
           </div>
         </div>
         <div>
-          <a class="btn btn-outline-danger w-100">Sair</a>
+          <a  class="btn btn-outline-danger w-100">Sair</a>
         </div>
       </div>
     <div class="col-10">
